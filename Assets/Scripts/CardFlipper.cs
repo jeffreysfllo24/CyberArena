@@ -14,7 +14,7 @@ public class CardFlipper : MonoBehaviour
         //when Flip() is called, store the value of the current sprite attached to this gameobject
         Sprite currentSprite = gameObject.GetComponent<Image>().sprite;
 
-        //conditional logic to determine whether to display the card front or back sprite
+        // Conditional logic to determine whether to display the card front or back sprite
         if (currentSprite == CardFront)
         {
             gameObject.GetComponent<Image>().sprite = CardBack;

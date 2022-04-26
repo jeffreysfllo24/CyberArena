@@ -13,6 +13,7 @@ public class PlayerManager : NetworkBehaviour
     public GameObject PlayerArea;
     public GameObject EnemyArea;
     public GameObject DropZone;
+    public GameObject DefenceArea;
 
     //the cards List represents our deck of cards
     List<GameObject> cards = new List<GameObject>();
@@ -24,6 +25,7 @@ public class PlayerManager : NetworkBehaviour
         PlayerArea = GameObject.Find("PlayerArea");
         EnemyArea = GameObject.Find("EnemyArea");
         DropZone = GameObject.Find("DropZone");
+        DefenceArea = GameObject.Find("DefenceArea");
     }
 
     //when the server starts, store Card1 and Card2 in the cards deck. Note that server-only methods require the [Server] attribute immediately preceding them!
@@ -43,21 +45,21 @@ public class PlayerManager : NetworkBehaviour
         {
             GameObject card = Instantiate(cards[Random.Range(0, cards.Count)], new Vector2(0, 0), Quaternion.identity);
             NetworkServer.Spawn(card, connectionToClient);
-            RpcShowCard(card, "Dealt");
+            RpcShowCard(card, "Dealt", "");
         }
     }
 
     //PlayCard() is called by the DragDrop script when a card is placed in the DropZone, and requests CmdPlayCard() from the Server
-    public void PlayCard(GameObject card)
+    public void PlayCard(GameObject card, string playAreaName)
     {
-        CmdPlayCard(card);
+        CmdPlayCard(card, playAreaName);
     }
 
     //CmdPlayCard() uses the same logic as CmdDealCards() in rendering cards on all Clients, except that it specifies that the card has been "Played" rather than "Dealt"
     [Command]
-    void CmdPlayCard(GameObject card)
+    void CmdPlayCard(GameObject card, string playAreaName)
     {
-        RpcShowCard(card, "Played");
+        RpcShowCard(card, "Played", playAreaName);
         
         //If this is the Server, trigger the UpdateTurnsPlayed() method to demonstrate how to implement game logic on card drop
         if (isServer)
@@ -85,8 +87,10 @@ public class PlayerManager : NetworkBehaviour
 
     //ClientRpcs are methods requested by the Server to run on all Clients, and require the [ClientRpc] attribute immediately preceding them
     [ClientRpc]
-    void RpcShowCard(GameObject card, string type)
+    void RpcShowCard(GameObject card, string type, string playAreaName)
     {
+        Debug.Log(playAreaName);
+
         //if the card has been "Dealt," determine whether this Client has authority over it, and send it either to the PlayerArea or EnemyArea, accordingly. For the latter, flip it so the player can't see the front!
         if (type == "Dealt")
         {
@@ -103,7 +107,12 @@ public class PlayerManager : NetworkBehaviour
         //if the card has been "Played," send it to the DropZone. If this Client doesn't have authority over it, flip it so the player can now see the front!
         else if (type == "Played")
         {
-            card.transform.SetParent(DropZone.transform, false);
+            if (playAreaName == "DropZone") {
+                card.transform.SetParent(DropZone.transform, false);
+            } else if (playAreaName == "DefenceArea") {
+                card.transform.SetParent(DefenceArea.transform, false);
+            }
+
             if (!hasAuthority)
             {
                 card.GetComponent<CardFlipper>().Flip();

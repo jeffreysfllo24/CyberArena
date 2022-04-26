@@ -64,6 +64,8 @@ public class DragDrop : NetworkBehaviour
     {
         if (!isDraggable) return;
         isDragging = false;
+        
+        // TODO add logic to determine if correct card type (defence, asset) is placed in correct area using game object name or property
 
         //if the gameobject is put in a dropzone, set it as a child of the dropzone and access the PlayerManager of this client to let the server know a card has been played
         if (isOverDropZone)
@@ -72,7 +74,7 @@ public class DragDrop : NetworkBehaviour
             isDraggable = false;
             NetworkIdentity networkIdentity = NetworkClient.connection.identity;
             PlayerManager = networkIdentity.GetComponent<PlayerManager>();
-            PlayerManager.PlayCard(gameObject);
+            PlayerManager.PlayCard(gameObject, dropZone.name);
         }
         //otherwise, send it back from whence it came
         else
