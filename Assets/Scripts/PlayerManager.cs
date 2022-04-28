@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 //the "using Mirror" assembly reference is required on any script that involves networking
 using Mirror;
+using UnityEngine.UI;
 
 //the PlayerManager is the main controller script that can act as Server, Client, and Host (Server/Client). Like all network scripts, it must derive from NetworkBehaviour (instead of the standard MonoBehaviour)
 public class PlayerManager : NetworkBehaviour
@@ -17,6 +18,7 @@ public class PlayerManager : NetworkBehaviour
 
     //the cards List represents our deck of cards
     List<GameObject> cards = new List<GameObject>();
+    public bool isPlayerTurn = false; // Boolean indiciating whether it is the current players turn
 
     public override void OnStartClient()
     {
@@ -26,6 +28,15 @@ public class PlayerManager : NetworkBehaviour
         EnemyArea = GameObject.Find("EnemyArea");
         DropZone = GameObject.Find("DropZone");
         DefenceArea = GameObject.Find("DefenceArea");
+
+        if (isServer) {
+            isPlayerTurn = true;
+            GameObject.Find("Button").GetComponentInChildren<Text>().text = "End Turn";
+        } else {
+            GameObject.Find("Button").GetComponentInChildren<Text>().text = "Enemy Turn";
+        }
+        
+        CmdUpdatePlayersConnected();
     }
 
     //when the server starts, store Card1 and Card2 in the cards deck. Note that server-only methods require the [Server] attribute immediately preceding them!
@@ -38,10 +49,10 @@ public class PlayerManager : NetworkBehaviour
     
     //Commands are methods requested by Clients to run on the Server, and require the [Command] attribute immediately preceding them. CmdDealCards() is called by the DrawCards script attached to the client Button
     [Command]
-    public void CmdDealCards()
+    public void CmdDealCards(int n)
     {
         //(5x) Spawn a random card from the cards deck on the Server, assigning authority over it to the Client that requested the Command. Then run RpcShowCard() and indicate that this card was "Dealt"
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < n; i++)
         {
             GameObject card = Instantiate(cards[Random.Range(0, cards.Count)], new Vector2(0, 0), Quaternion.identity);
             NetworkServer.Spawn(card, connectionToClient);
@@ -75,7 +86,14 @@ public class PlayerManager : NetworkBehaviour
         GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         gm.UpdateTurnsPlayed();
         RpcLogToClients("Turns Played: " + gm.TurnsPlayed);
+    }
 
+    //CmdUpdatePlayersConnected() find the GameManager game object and incrementing the number of players connected
+    [Command]
+    void CmdUpdatePlayersConnected()
+    {
+        GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gm.CmdUpdatePlayerConnected();
     }
 
     //RpcLogToClients demonstrates how to request all clients to log a message to their respective consoles
@@ -118,6 +136,18 @@ public class PlayerManager : NetworkBehaviour
                 card.GetComponent<CardFlipper>().Flip();
             }
         }
+    }
+
+    //RPCInitiateGame() is called from the server-only GameManager game object when BOTH players have connected.
+    [ClientRpc]
+    public void RpcInitiateGame()
+    {
+        Debug.Log("Game Initiated");
+        
+        // Deal 5 cards to each client/player
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        pm.CmdDealCards(5);
     }
 
     //CmdTargetSelfCard() is called by the TargetClick script if the Client hasAuthority over the gameobject that was clicked

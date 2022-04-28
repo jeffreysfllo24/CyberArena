@@ -53,7 +53,7 @@ public class DragDrop : NetworkBehaviour
     public void StartDrag()
     {
         //if the gameobject is draggable, store the parent and position of it so we know where to return it if it isn't put in a dropzone
-        if (!isDraggable) return;
+        if (!isDraggable || !isPlayerTurn()) return;
         startParent = transform.parent.gameObject;
         startPosition = transform.position;
         isDragging = true;
@@ -62,7 +62,7 @@ public class DragDrop : NetworkBehaviour
     //EndDrag() is called by the End Drag event in the Event Trigger component attached to this gameobject
     public void EndDrag()
     {
-        if (!isDraggable) return;
+        if (!isDraggable || !isPlayerTurn()) return;
         isDragging = false;
         
         // TODO add logic to determine if correct card type (defence, asset) is placed in correct area using game object name or property
@@ -82,5 +82,12 @@ public class DragDrop : NetworkBehaviour
             transform.position = startPosition;
             transform.SetParent(startParent.transform, false);
         }
+    }
+
+    private bool isPlayerTurn()
+    {
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        PlayerManager = networkIdentity.GetComponent<PlayerManager>();
+        return PlayerManager.isPlayerTurn;
     }
 }
