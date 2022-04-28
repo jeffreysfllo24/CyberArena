@@ -88,6 +88,7 @@ public class DragDrop : NetworkBehaviour
     {
         NetworkIdentity networkIdentity = NetworkClient.connection.identity;
         PlayerManager = networkIdentity.GetComponent<PlayerManager>();
+        Debug.Log(PlayerManager.isPlayerTurn);
         return PlayerManager.isPlayerTurn;
     }
 }

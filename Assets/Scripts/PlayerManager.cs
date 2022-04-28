@@ -18,6 +18,7 @@ public class PlayerManager : NetworkBehaviour
 
     //the cards List represents our deck of cards
     List<GameObject> cards = new List<GameObject>();
+
     public bool isPlayerTurn = false; // Boolean indiciating whether it is the current players turn
 
     public override void OnStartClient()
@@ -31,12 +32,18 @@ public class PlayerManager : NetworkBehaviour
 
         if (isServer) {
             isPlayerTurn = true;
+        }
+        updateTurnStatus(isPlayerTurn);
+        
+        CmdUpdatePlayersConnected();
+    }
+
+    void updateTurnStatus(bool isPlayerTurnVal) {
+        if (isPlayerTurnVal) {
             GameObject.Find("Button").GetComponentInChildren<Text>().text = "End Turn";
         } else {
             GameObject.Find("Button").GetComponentInChildren<Text>().text = "Enemy Turn";
         }
-        
-        CmdUpdatePlayersConnected();
     }
 
     //when the server starts, store Card1 and Card2 in the cards deck. Note that server-only methods require the [Server] attribute immediately preceding them!
@@ -143,11 +150,32 @@ public class PlayerManager : NetworkBehaviour
     public void RpcInitiateGame()
     {
         Debug.Log("Game Initiated");
-        
+
         // Deal 5 cards to each client/player
         NetworkIdentity networkIdentity = NetworkClient.connection.identity;
         PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
         pm.CmdDealCards(5);
+    }
+
+    //RpcSwitchTurns() is called when a player ends their turn, each client will flip its turn
+    [ClientRpc]
+    public void RpcSwitchTurns()
+    {
+        Debug.Log("RpcSwitchTurns Called");
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        pm.isPlayerTurn = !pm.isPlayerTurn;
+        updateTurnStatus(pm.isPlayerTurn);
+
+        if(pm.isPlayerTurn) {
+            pm.CmdDealCards(1);
+        }
+    }
+
+    [Command]
+    public void CmdSwitchTurns()
+    {
+        RpcSwitchTurns();
     }
 
     //CmdTargetSelfCard() is called by the TargetClick script if the Client hasAuthority over the gameobject that was clicked

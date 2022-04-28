@@ -13,7 +13,11 @@ public class DrawCards : NetworkBehaviour
         //locate the PlayerManager in this Client and request the Server to deal cards
         NetworkIdentity networkIdentity = NetworkClient.connection.identity;
         PlayerManager = networkIdentity.GetComponent<PlayerManager>();
-        PlayerManager.CmdDealCards(1);
+
+        // Only if it is the players turn can they end it
+        if (PlayerManager.isPlayerTurn) {
+            PlayerManager.CmdSwitchTurns();
+        }
     }
 
 }
