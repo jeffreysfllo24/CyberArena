@@ -24,7 +24,9 @@ public class CardZoom : NetworkBehaviour
     public void OnHoverEnter()
     {
         //determine whether the client hasAuthority over this gameobject
-        if (!hasAuthority) return;
+        bool cardBeenPlayed = gameObject.GetComponent<DragDrop>().beenPlayed;
+        Debug.Log("onHoverEnter" + cardBeenPlayed);
+        if (!hasAuthority && !cardBeenPlayed) return;
 
         //if the client hasAuthority, create a new version of the card with the appropriate sprite
     

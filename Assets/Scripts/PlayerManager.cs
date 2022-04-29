@@ -13,8 +13,10 @@ public class PlayerManager : NetworkBehaviour
     public GameObject Card2;
     public GameObject PlayerArea;
     public GameObject EnemyArea;
-    public GameObject DropZone;
+    public GameObject AssetArea;
     public GameObject DefenceArea;
+    public GameObject EnemyAssetArea;
+    public GameObject EnemyDefenceArea;
 
     //the cards List represents our deck of cards
     List<GameObject> cards = new List<GameObject>();
@@ -27,8 +29,11 @@ public class PlayerManager : NetworkBehaviour
 
         PlayerArea = GameObject.Find("PlayerArea");
         EnemyArea = GameObject.Find("EnemyArea");
-        DropZone = GameObject.Find("DropZone");
+        AssetArea = GameObject.Find("AssetArea");
         DefenceArea = GameObject.Find("DefenceArea");
+        EnemyAssetArea = GameObject.Find("EnemyAssetArea");
+        EnemyDefenceArea = GameObject.Find("EnemyDefenceArea");
+
 
         if (isServer) {
             isPlayerTurn = true;
@@ -132,11 +137,20 @@ public class PlayerManager : NetworkBehaviour
         //if the card has been "Played," send it to the DropZone. If this Client doesn't have authority over it, flip it so the player can now see the front!
         else if (type == "Played")
         {
-            if (playAreaName == "DropZone") {
-                card.transform.SetParent(DropZone.transform, false);
-            } else if (playAreaName == "DefenceArea") {
-                card.transform.SetParent(DefenceArea.transform, false);
+            if (hasAuthority) {
+                if (playAreaName == "AssetArea") {
+                    card.transform.SetParent(AssetArea.transform, false);
+                } else if (playAreaName == "DefenceArea") {
+                    card.transform.SetParent(DefenceArea.transform, false);
+                }
+            } else {
+                if (playAreaName == "AssetArea") {
+                    card.transform.SetParent(EnemyAssetArea.transform, false);
+                } else if (playAreaName == "DefenceArea") {
+                    card.transform.SetParent(EnemyDefenceArea.transform, false);
+                }
             }
+            
 
             if (!hasAuthority)
             {

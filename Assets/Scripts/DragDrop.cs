@@ -15,6 +15,9 @@ public class DragDrop : NetworkBehaviour
     private GameObject dropZone;
     private GameObject startParent;
     private Vector2 startPosition;
+    
+    [SyncVar]
+    public bool beenPlayed = false;
 
     private void Start()
     {
@@ -41,11 +44,14 @@ public class DragDrop : NetworkBehaviour
         //in our scene, if this gameobject collides with something, it must be the dropzone, as specified in the layer collision matrix (cards are part of the "Cards" layer and the dropzone is part of the "DropZone" layer)
         isOverDropZone = true;
         dropZone = collision.gameObject;
+        Debug.Log("Entering Game Object" + dropZone.name);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         isOverDropZone = false;
+
+        Debug.Log("Exiting Game Object" + collision.gameObject.name);
         dropZone = null;
     }
 
@@ -72,6 +78,7 @@ public class DragDrop : NetworkBehaviour
         {
             transform.SetParent(dropZone.transform, false);
             isDraggable = false;
+            beenPlayed = true;
             NetworkIdentity networkIdentity = NetworkClient.connection.identity;
             PlayerManager = networkIdentity.GetComponent<PlayerManager>();
             PlayerManager.PlayCard(gameObject, dropZone.name);
