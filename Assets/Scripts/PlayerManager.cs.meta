@@ -3,7 +3,16 @@ guid: 5f6f2e46e7f3f8147be5e69ba5ade71f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Card1: {instanceID: 0}
+  - Card2: {instanceID: 0}
+  - EncryptionCard: {instanceID: 0}
+  - PlayerArea: {instanceID: 0}
+  - EnemyArea: {instanceID: 0}
+  - AssetArea: {instanceID: 0}
+  - DefenceArea: {instanceID: 0}
+  - EnemyAssetArea: {instanceID: 0}
+  - EnemyDefenceArea: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

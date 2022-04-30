@@ -11,6 +11,16 @@ public class PlayerManager : NetworkBehaviour
     //Card1 and Card2 are located in the inspector, whereas PlayerArea, EnemyArea, and DropZone are located at runtime within OnStartClient()
     public GameObject Card1;
     public GameObject Card2;
+
+    // Defence Cards
+    public GameObject EncryptionCard;
+
+    // Assets
+    public GameObject Smartphone;
+
+    // Attacks
+    public GameObject UnsecuredNetwork;
+
     public GameObject PlayerArea;
     public GameObject EnemyArea;
     public GameObject AssetArea;
@@ -55,8 +65,9 @@ public class PlayerManager : NetworkBehaviour
     [Server]
     public override void OnStartServer()
     {
-        cards.Add(Card1);
-        cards.Add(Card2);
+        cards.Add(EncryptionCard);
+        cards.Add(Smartphone);
+        cards.Add(UnsecuredNetwork);
     }
     
     //Commands are methods requested by Clients to run on the Server, and require the [Command] attribute immediately preceding them. CmdDealCards() is called by the DrawCards script attached to the client Button
