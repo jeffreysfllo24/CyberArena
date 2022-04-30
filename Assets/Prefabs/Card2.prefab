@@ -76,7 +76,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4da7c4a1c5be3914da681368bb9a89b0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2c03b0e1d2e524333beee2fba7f7e3dc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -102,6 +102,7 @@ MonoBehaviour:
   syncInterval: 0.1
   Canvas: {fileID: 0}
   PlayerManager: {fileID: 0}
+  beenPlayed: 0
 --- !u!114 &7867904223647231972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,8 +131,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b5a8533e1dacd43a04d7c80156686c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardFront: {fileID: 21300000, guid: 4da7c4a1c5be3914da681368bb9a89b0, type: 3}
-  CardBack: {fileID: 21300000, guid: 35bf44fe8587d2a409b87a02da1db8d5, type: 3}
+  CardFront: {fileID: 21300000, guid: 2c03b0e1d2e524333beee2fba7f7e3dc, type: 3}
+  CardBack: {fileID: 21300000, guid: 4e4aee57c5fbc4fa8925c48159164284, type: 3}
 --- !u!114 &1637688465399037633
 MonoBehaviour:
   m_ObjectHideFlags: 0
