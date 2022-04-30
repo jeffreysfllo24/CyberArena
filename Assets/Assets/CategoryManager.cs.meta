@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: e49e49bf229c84efd9269026a3eb930f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - wireless: {fileID: 21300000, guid: 7de22586ab6fa48149ac2f9db0737368, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

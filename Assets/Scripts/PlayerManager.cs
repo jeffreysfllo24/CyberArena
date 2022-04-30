@@ -10,14 +10,13 @@ public class PlayerManager : NetworkBehaviour
 {
     //Card1 and Card2 are located in the inspector, whereas PlayerArea, EnemyArea, and DropZone are located at runtime within OnStartClient()
     public GameObject Card1;
-    public GameObject Card2;
     public GameObject PlayerArea;
     public GameObject EnemyArea;
     public GameObject DropZone;
     public GameObject DefenceArea;
 
     //the cards List represents our deck of cards
-    List<GameObject> cards = new List<GameObject>();
+    List<Card> cards;
 
     public bool isPlayerTurn = false; // Boolean indiciating whether it is the current players turn
 
@@ -50,20 +49,30 @@ public class PlayerManager : NetworkBehaviour
     [Server]
     public override void OnStartServer()
     {
-        cards.Add(Card1);
-        cards.Add(Card2);
+        CardManager cardManager = new CardManager();
+        cards = cardManager.getCards();
     }
     
     //Commands are methods requested by Clients to run on the Server, and require the [Command] attribute immediately preceding them. CmdDealCards() is called by the DrawCards script attached to the client Button
     [Command]
     public void CmdDealCards(int n)
     {
+        if (!hasAuthority) { Debug.Log("REE"); return; }
+
         //(5x) Spawn a random card from the cards deck on the Server, assigning authority over it to the Client that requested the Command. Then run RpcShowCard() and indicate that this card was "Dealt"
         for (int i = 0; i < n; i++)
         {
-            GameObject card = Instantiate(cards[Random.Range(0, cards.Count)], new Vector2(0, 0), Quaternion.identity);
-            NetworkServer.Spawn(card, connectionToClient);
-            RpcShowCard(card, "Dealt", "");
+            Card randomCard = cards[Random.Range(0, cards.Count)];
+            
+            GameObject cardObject = Instantiate(Card1, new Vector2(0, 0), Quaternion.identity);
+            CardDisplay cardDisplay = cardObject.GetComponent<CardDisplay>();
+            cardDisplay.nameText.text = "ASDF";//randomCard.cardName;
+            // cardDisplay.hoverText.text = randomCard.description;
+            // cardDisplay.artworkImage.sprite = randomCard.artwork;
+            // cardDisplay.categoryImage.sprite = CategoryManager.Instance.spriteForCategory(randomCard.category);
+
+            NetworkServer.Spawn(cardObject, connectionToClient);
+            RpcShowCard(cardObject, "Dealt", "");
         }
     }
 

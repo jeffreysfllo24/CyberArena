@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 965ceca3106b747a9932bcedd59b43be
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - smartphone: {fileID: 11400000, guid: f8500af72ebd84a9aab8ca1db1fa1a0d, type: 2}
+  - encryption: {fileID: 11400000, guid: edda807843b4a4fffb5ef6d0d8ff78fd, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
