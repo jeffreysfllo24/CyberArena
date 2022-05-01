@@ -33,6 +33,7 @@ public class PlayerManager : NetworkBehaviour
     private int enemyScore = 0;
     public TextMeshProUGUI PlayerScoreText;
     public TextMeshProUGUI EnemyScoreText;
+    public TextMeshProUGUI TurnCounterText;
 
     //the cards List represents our deck of cards
     List<GameObject> cards = new List<GameObject>();
@@ -53,6 +54,7 @@ public class PlayerManager : NetworkBehaviour
         GameObject Hud = GameObject.Find("HUD");
         PlayerScoreText = Hud.transform.Find("PlayerScore").GetComponent<TextMeshProUGUI>();
         EnemyScoreText = Hud.transform.Find("EnemyScore").GetComponent<TextMeshProUGUI>();
+        TurnCounterText = Hud.transform.Find("TurnCounter").GetComponent<TextMeshProUGUI>();
 
         if (isServer) {
             isPlayerTurn = true;
@@ -103,12 +105,6 @@ public class PlayerManager : NetworkBehaviour
     void CmdPlayCard(GameObject card, string playAreaName)
     {
         RpcShowCard(card, "Played", playAreaName);
-        
-        //If this is the Server, trigger the UpdateTurnsPlayed() method to demonstrate how to implement game logic on card drop
-        if (isServer)
-        {
-            UpdateTurnsPlayed();
-        }
     }
 
     //UpdateTurnsPlayed() is run only by the Server, finding the Server-only GameManager game object and incrementing the relevant variable
@@ -117,7 +113,19 @@ public class PlayerManager : NetworkBehaviour
     {
         GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         gm.UpdateTurnsPlayed();
-        RpcLogToClients("Turns Played: " + gm.TurnsPlayed);
+        RpcUpdateTurnCounter(gm.TurnsPlayed);
+        
+    }
+
+    [ClientRpc]
+    void RpcUpdateTurnCounter(int turn)
+    {
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        // a display turn includes player one and player two taking a turn
+        int displayTurn = 1 + turn/2;
+        pm.TurnCounterText.text = "Turn: " + displayTurn + "/10";
+        Debug.Log("Turns Played: " + turn);
     }
 
     //CmdUpdatePlayersConnected() find the GameManager game object and incrementing the number of players connected
@@ -201,6 +209,7 @@ public class PlayerManager : NetworkBehaviour
     public void CmdSwitchTurns()
     {
         RpcSwitchTurns();
+        UpdateTurnsPlayed();
     }
 
     //RpcSwitchTurns() is called when a player ends their turn, each client will flip its turn
