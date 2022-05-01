@@ -4,6 +4,7 @@ using UnityEngine;
 //the "using Mirror" assembly reference is required on any script that involves networking
 using Mirror;
 using UnityEngine.UI;
+using TMPro;
 
 //the PlayerManager is the main controller script that can act as Server, Client, and Host (Server/Client). Like all network scripts, it must derive from NetworkBehaviour (instead of the standard MonoBehaviour)
 public class PlayerManager : NetworkBehaviour
@@ -28,6 +29,12 @@ public class PlayerManager : NetworkBehaviour
     public GameObject EnemyAssetArea;
     public GameObject EnemyDefenceArea;
 
+    private int playerScore = 0;
+    private int enemyScore = 0;
+    public TextMeshProUGUI PlayerScoreText;
+    public TextMeshProUGUI EnemyScoreText;
+    public TextMeshProUGUI TurnCounterText;
+
     //the cards List represents our deck of cards
     List<GameObject> cards = new List<GameObject>();
 
@@ -44,6 +51,10 @@ public class PlayerManager : NetworkBehaviour
         EnemyAssetArea = GameObject.Find("EnemyAssetArea");
         EnemyDefenceArea = GameObject.Find("EnemyDefenceArea");
 
+        GameObject Hud = GameObject.Find("HUD");
+        PlayerScoreText = Hud.transform.Find("PlayerScore").GetComponent<TextMeshProUGUI>();
+        EnemyScoreText = Hud.transform.Find("EnemyScore").GetComponent<TextMeshProUGUI>();
+        TurnCounterText = Hud.transform.Find("TurnCounter").GetComponent<TextMeshProUGUI>();
 
         if (isServer) {
             isPlayerTurn = true;
@@ -94,12 +105,6 @@ public class PlayerManager : NetworkBehaviour
     void CmdPlayCard(GameObject card, string playAreaName)
     {
         RpcShowCard(card, "Played", playAreaName);
-        
-        //If this is the Server, trigger the UpdateTurnsPlayed() method to demonstrate how to implement game logic on card drop
-        if (isServer)
-        {
-            UpdateTurnsPlayed();
-        }
     }
 
     //UpdateTurnsPlayed() is run only by the Server, finding the Server-only GameManager game object and incrementing the relevant variable
@@ -108,7 +113,19 @@ public class PlayerManager : NetworkBehaviour
     {
         GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         gm.UpdateTurnsPlayed();
-        RpcLogToClients("Turns Played: " + gm.TurnsPlayed);
+        RpcUpdateTurnCounter(gm.TurnsPlayed);
+        
+    }
+
+    [ClientRpc]
+    void RpcUpdateTurnCounter(int turn)
+    {
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        // a display turn includes player one and player two taking a turn
+        int displayTurn = 1 + turn/2;
+        pm.TurnCounterText.text = "Turn: " + displayTurn + "/10";
+        Debug.Log("Turns Played: " + turn);
     }
 
     //CmdUpdatePlayersConnected() find the GameManager game object and incrementing the number of players connected
@@ -117,6 +134,12 @@ public class PlayerManager : NetworkBehaviour
     {
         GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         gm.CmdUpdatePlayerConnected();
+    }
+
+    [ClientRpc]
+    void RpcIncrementClients(string message)
+    {
+        Debug.Log(message);
     }
 
     //RpcLogToClients demonstrates how to request all clients to log a message to their respective consoles
@@ -182,6 +205,13 @@ public class PlayerManager : NetworkBehaviour
         pm.CmdDealCards(5);
     }
 
+    [Command]
+    public void CmdSwitchTurns()
+    {
+        RpcSwitchTurns();
+        UpdateTurnsPlayed();
+    }
+
     //RpcSwitchTurns() is called when a player ends their turn, each client will flip its turn
     [ClientRpc]
     public void RpcSwitchTurns()
@@ -189,18 +219,24 @@ public class PlayerManager : NetworkBehaviour
         Debug.Log("RpcSwitchTurns Called");
         NetworkIdentity networkIdentity = NetworkClient.connection.identity;
         PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+
+        // calculate score
+        if (pm.isPlayerTurn) {
+            Debug.Log("Number of assets: " + AssetArea.transform.childCount);
+            pm.playerScore += AssetArea.transform.childCount;
+            pm.PlayerScoreText.text = pm.playerScore.ToString();
+        } else {
+            Debug.Log("Number of enemy assets: " + AssetArea.transform.childCount);
+            pm.enemyScore += EnemyAssetArea.transform.childCount;
+            pm.EnemyScoreText.text = pm.enemyScore.ToString();
+        }
+
         pm.isPlayerTurn = !pm.isPlayerTurn;
         updateTurnStatus(pm.isPlayerTurn);
 
-        if(pm.isPlayerTurn) {
+        if (pm.isPlayerTurn) { // draw card if starting turn
             pm.CmdDealCards(1);
         }
-    }
-
-    [Command]
-    public void CmdSwitchTurns()
-    {
-        RpcSwitchTurns();
     }
 
     //CmdTargetSelfCard() is called by the TargetClick script if the Client hasAuthority over the gameobject that was clicked
