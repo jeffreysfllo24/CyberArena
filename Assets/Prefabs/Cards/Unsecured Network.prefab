@@ -103,6 +103,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5260648829126047132, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
+      propertyPath: ZoomCard
+      value: 
+      objectReference: {fileID: 124052072212527024, guid: debf40cb860d34b23a1a676ac063cb1e, type: 3}
     - target: {fileID: 5305781782516512934, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
       propertyPath: m_Sprite
       value: 
