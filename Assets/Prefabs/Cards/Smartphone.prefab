@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 298061276977505673, guid: b0034f346a20b4859bf9d6d6c62f89e8, type: 3}
+      propertyPath: ZoomCard
+      value: 
+      objectReference: {fileID: 4015146212329690991, guid: 48125c5af9328468aa1c51153c02892d, type: 3}
     - target: {fileID: 324986438255405235, guid: b0034f346a20b4859bf9d6d6c62f89e8, type: 3}
       propertyPath: m_Sprite
       value: 
