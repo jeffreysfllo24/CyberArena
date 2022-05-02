@@ -19,6 +19,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Encryption
       objectReference: {fileID: 0}
+    - target: {fileID: 3191958919435826585, guid: 4b61634b67cd34c64b6eab2ed82a393e, type: 3}
+      propertyPath: m_TagString
+      value: Defence
+      objectReference: {fileID: 0}
     - target: {fileID: 4114885069787024939, guid: 4b61634b67cd34c64b6eab2ed82a393e, type: 3}
       propertyPath: m_Sprite
       value: 

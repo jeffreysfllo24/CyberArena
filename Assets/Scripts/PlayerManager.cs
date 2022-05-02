@@ -22,6 +22,10 @@ public class PlayerManager : NetworkBehaviour
     // Attacks
     public GameObject UnsecuredNetwork;
 
+    // Board Locations
+    public GameObject SpaceArea1; public GameObject SpaceArea2; public GameObject SpaceArea3; public GameObject SpaceArea4; public GameObject SpaceArea5; public GameObject SpaceArea6; public GameObject SpaceArea7; public GameObject SpaceArea8;
+
+    public GameObject EnemyArea1; public GameObject EnemyArea2; public GameObject EnemyArea3; public GameObject EnemyArea4; public GameObject EnemyArea5; public GameObject EnemyArea6; public GameObject EnemyArea7; public GameObject EnemyArea8;
     public GameObject PlayerArea;
     public GameObject EnemyArea;
     public GameObject AssetArea;
@@ -37,7 +41,6 @@ public class PlayerManager : NetworkBehaviour
 
     //the cards List represents our deck of cards
     List<GameObject> cards = new List<GameObject>();
-
     public bool isPlayerTurn = false; // Boolean indiciating whether it is the current players turn
 
     public override void OnStartClient()
@@ -56,12 +59,34 @@ public class PlayerManager : NetworkBehaviour
         EnemyScoreText = Hud.transform.Find("EnemyScore").GetComponent<TextMeshProUGUI>();
         TurnCounterText = Hud.transform.Find("TurnCounter").GetComponent<TextMeshProUGUI>();
 
+        setAreas();
+
         if (isServer) {
             isPlayerTurn = true;
         }
         updateTurnStatus(isPlayerTurn);
         
         CmdUpdatePlayersConnected();
+    }
+
+    void setAreas() {
+        SpaceArea1 = GameObject.Find("SpaceArea (1)");
+        SpaceArea2 = GameObject.Find("SpaceArea (2)");
+        SpaceArea3 = GameObject.Find("SpaceArea (3)");
+        SpaceArea4 = GameObject.Find("SpaceArea (4)");
+        SpaceArea5 = GameObject.Find("SpaceArea (5)");
+        SpaceArea6 = GameObject.Find("SpaceArea (6)");
+        SpaceArea7 = GameObject.Find("SpaceArea (7)");
+        SpaceArea8 = GameObject.Find("SpaceArea (8)");
+
+        EnemyArea1 = GameObject.Find("EnemyArea (1)");
+        EnemyArea2 = GameObject.Find("EnemyArea (2)");
+        EnemyArea3 = GameObject.Find("EnemyArea (3)");
+        EnemyArea4 = GameObject.Find("EnemyArea (4)");
+        EnemyArea5 = GameObject.Find("EnemyArea (5)");
+        EnemyArea6 = GameObject.Find("EnemyArea (6)");
+        EnemyArea7 = GameObject.Find("EnemyArea (7)");
+        EnemyArea8 = GameObject.Find("EnemyArea (8)");
     }
 
     void updateTurnStatus(bool isPlayerTurnVal) {
@@ -172,19 +197,42 @@ public class PlayerManager : NetworkBehaviour
         else if (type == "Played")
         {
             if (hasAuthority) {
-                if (playAreaName == "AssetArea") {
-                    card.transform.SetParent(AssetArea.transform, false);
-                } else if (playAreaName == "DefenceArea") {
-                    card.transform.SetParent(DefenceArea.transform, false);
+                if (playAreaName == "SpaceArea (1)") {
+                    card.transform.SetParent(SpaceArea1.transform, false);
+                } else if (playAreaName == "SpaceArea (2)") {
+                    card.transform.SetParent(SpaceArea2.transform, false);
+                } else if (playAreaName == "SpaceArea (3)") {
+                    card.transform.SetParent(SpaceArea3.transform, false);
+                } else if (playAreaName == "SpaceArea (4)") {
+                    card.transform.SetParent(SpaceArea4.transform, false);
+                } else if (playAreaName == "SpaceArea (5)") {
+                    card.transform.SetParent(SpaceArea5.transform, false);
+                } else if (playAreaName == "SpaceArea (6)") {
+                    card.transform.SetParent(SpaceArea6.transform, false);
+                } else if (playAreaName == "SpaceArea (7)") {
+                    card.transform.SetParent(SpaceArea7.transform, false);
+                } else if (playAreaName == "SpaceArea (8)") {
+                    card.transform.SetParent(SpaceArea8.transform, false);
                 }
             } else {
-                if (playAreaName == "AssetArea") {
-                    card.transform.SetParent(EnemyAssetArea.transform, false);
-                } else if (playAreaName == "DefenceArea") {
-                    card.transform.SetParent(EnemyDefenceArea.transform, false);
+                if (playAreaName == "SpaceArea (1)") {
+                    card.transform.SetParent(EnemyArea1.transform, false);
+                } else if (playAreaName == "SpaceArea (2)") {
+                    card.transform.SetParent(EnemyArea2.transform, false);
+                } else if (playAreaName == "SpaceArea (3)") {
+                    card.transform.SetParent(EnemyArea3.transform, false);
+                } else if (playAreaName == "SpaceArea (4)") {
+                    card.transform.SetParent(EnemyArea4.transform, false);
+                } else if (playAreaName == "SpaceArea (5)") {
+                    card.transform.SetParent(EnemyArea5.transform, false);
+                } else if (playAreaName == "SpaceArea (6)") {
+                    card.transform.SetParent(EnemyArea6.transform, false);
+                } else if (playAreaName == "SpaceArea (7)") {
+                    card.transform.SetParent(EnemyArea7.transform, false);
+                } else if (playAreaName == "SpaceArea (8)") {
+                    card.transform.SetParent(EnemyArea8.transform, false);
                 }
             }
-            
 
             if (!hasAuthority)
             {

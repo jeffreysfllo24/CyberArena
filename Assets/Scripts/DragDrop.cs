@@ -42,9 +42,17 @@ public class DragDrop : NetworkBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //in our scene, if this gameobject collides with something, it must be the dropzone, as specified in the layer collision matrix (cards are part of the "Cards" layer and the dropzone is part of the "DropZone" layer)
-        isOverDropZone = true;
         dropZone = collision.gameObject;
+
+        if (isOverDropZoneAreas(collision.gameObject)) {
+            isOverDropZone = true;
+        }
+
         Debug.Log("Entering Game Object" + dropZone.name);
+    }
+
+    private bool isOverDropZoneAreas(GameObject dropZone) {
+        return (dropZone.name.StartsWith("EnemyArea") || dropZone.name.StartsWith("SpaceArea"));
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -68,6 +76,9 @@ public class DragDrop : NetworkBehaviour
     //EndDrag() is called by the End Drag event in the Event Trigger component attached to this gameobject
     public void EndDrag()
     {
+        // Debug.Log(gameObject.tag + " " + dropZone.name +  " " + startParent.name);
+        Debug.Log("" + isDraggable + isOverDropZone);
+
         if (!isDraggable || !isPlayerTurn()) return;
         isDragging = false;
         

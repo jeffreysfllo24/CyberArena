@@ -111,6 +111,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unsecured Network
       objectReference: {fileID: 0}
+    - target: {fileID: 6698809748210893588, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
+      propertyPath: m_TagString
+      value: Attack
+      objectReference: {fileID: 0}
     - target: {fileID: 7147923876707800788, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
       propertyPath: m_AssetId
       value: b0034f346a20b4859bf9d6d6c62f89e8

@@ -15,6 +15,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Smartphone
       objectReference: {fileID: 0}
+    - target: {fileID: 1285085978387682049, guid: b0034f346a20b4859bf9d6d6c62f89e8, type: 3}
+      propertyPath: m_TagString
+      value: Asset
+      objectReference: {fileID: 0}
     - target: {fileID: 3319715871485150913, guid: b0034f346a20b4859bf9d6d6c62f89e8, type: 3}
       propertyPath: m_AssetId
       value: 4b61634b67cd34c64b6eab2ed82a393e
