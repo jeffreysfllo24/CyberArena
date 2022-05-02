@@ -274,7 +274,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   Canvas: {fileID: 0}
-  ZoomCard: {fileID: 8960603782339447322, guid: 574cb0a643710a7449aac67d7cea5380, type: 3}
+  ZoomCard: {fileID: 2023994295041883924, guid: 7a1a75d579683406886875b56071df48, type: 3}
 --- !u!114 &-6090971358240333625
 MonoBehaviour:
   m_ObjectHideFlags: 0
