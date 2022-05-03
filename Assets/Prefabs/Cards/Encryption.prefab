@@ -62,7 +62,7 @@ PrefabInstance:
     - target: {fileID: 4160053354652074769, guid: 4b61634b67cd34c64b6eab2ed82a393e, type: 3}
       propertyPath: ZoomCard
       value: 
-      objectReference: {fileID: 3000660768705667514, guid: b4d56b8444d664ce59813e02340874cc, type: 3}
+      objectReference: {fileID: 2754001281403097149, guid: b4d56b8444d664ce59813e02340874cc, type: 3}
     - target: {fileID: 5704162002793576809, guid: 4b61634b67cd34c64b6eab2ed82a393e, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 

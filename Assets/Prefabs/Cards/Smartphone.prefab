@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 298061276977505673, guid: b0034f346a20b4859bf9d6d6c62f89e8, type: 3}
       propertyPath: ZoomCard
       value: 
-      objectReference: {fileID: 3000660768705667514, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
+      objectReference: {fileID: 3744041081640821277, guid: 57f19a703401348e0b0b0f49152be0dd, type: 3}
     - target: {fileID: 324986438255405235, guid: b0034f346a20b4859bf9d6d6c62f89e8, type: 3}
       propertyPath: m_Sprite
       value: 
