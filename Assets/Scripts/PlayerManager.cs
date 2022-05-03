@@ -9,12 +9,8 @@ using TMPro;
 //the PlayerManager is the main controller script that can act as Server, Client, and Host (Server/Client). Like all network scripts, it must derive from NetworkBehaviour (instead of the standard MonoBehaviour)
 public class PlayerManager : NetworkBehaviour
 {
-    //Card1 and Card2 are located in the inspector, whereas PlayerArea, EnemyArea, and DropZone are located at runtime within OnStartClient()
-    public GameObject Card1;
-    public GameObject Card2;
-
     // Defence Cards
-    public GameObject EncryptionCard;
+    public GameObject Encryption;
 
     // Assets
     public GameObject Smartphone;
@@ -101,7 +97,7 @@ public class PlayerManager : NetworkBehaviour
     [Server]
     public override void OnStartServer()
     {
-        cards.Add(EncryptionCard);
+        cards.Add(Encryption);
         cards.Add(Smartphone);
         cards.Add(UnsecuredNetwork);
     }

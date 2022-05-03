@@ -48,11 +48,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  Card1: {fileID: 6698809748210893588, guid: c61ebb3b1a3c0674ab15fcc3d49ae24b, type: 3}
-  Card2: {fileID: 7251653076908780525, guid: a0e59473d25101a4292da67138db22d0, type: 3}
-  EncryptionCard: {fileID: 3000660768705667514, guid: 6f00734e0b95e429e80f42210b8188b7, type: 3}
-  Smartphone: {fileID: 3000660768705667514, guid: e2315a1519a4944568d447852d4cf7e6, type: 3}
-  UnsecuredNetwork: {fileID: 3000660768705667514, guid: 2db5a8c5e4bcd44dbae2304b0511db38, type: 3}
+  Encryption: {fileID: 3000660768705667514, guid: 6f00734e0b95e429e80f42210b8188b7, type: 3}
+  Smartphone: {fileID: 3191958919435826585, guid: 4b61634b67cd34c64b6eab2ed82a393e, type: 3}
+  UnsecuredNetwork: {fileID: 1285085978387682049, guid: b0034f346a20b4859bf9d6d6c62f89e8, type: 3}
   SpaceArea1: {fileID: 0}
   SpaceArea2: {fileID: 0}
   SpaceArea3: {fileID: 0}
