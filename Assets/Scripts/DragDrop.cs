@@ -85,7 +85,7 @@ public class DragDrop : NetworkBehaviour
         // TODO add logic to determine if correct card type (defence, asset) is placed in correct area using game object name or property
 
         //if the gameobject is put in a dropzone, set it as a child of the dropzone and access the PlayerManager of this client to let the server know a card has been played
-        if (isOverDropZone)
+        if (isOverDropZone && isValidMove(gameObject.tag, startParent.name, dropZone))
         {
             transform.SetParent(dropZone.transform, false);
             isDraggable = false;
@@ -100,6 +100,22 @@ public class DragDrop : NetworkBehaviour
             transform.position = startPosition;
             transform.SetParent(startParent.transform, false);
         }
+    }
+
+    private bool isValidMove(string tag, string startZone, GameObject endZone) {
+        // Valid Moves
+        // - Asset and Defence tag cards can be placed our players side zones
+        // - A defence card must be placed ON an asset, hence an asset must be placed first in a zone then a defence card
+        // - Maximum two cards per zone (first must be asset, second must be defence)
+
+        if (tag == "Asset") {
+            return endZone.transform.childCount == 0;
+        } else if (tag == "Defence") {
+            return endZone.transform.childCount == 1;
+        } else if (tag == "Attack") {
+            return false;
+        }
+        return false;
     }
 
     private bool isPlayerTurn()
