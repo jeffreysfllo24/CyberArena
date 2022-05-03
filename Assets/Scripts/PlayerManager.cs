@@ -181,8 +181,7 @@ public class PlayerManager : NetworkBehaviour
         Debug.Log(playAreaName);
 
         //if the card has been "Dealt," determine whether this Client has authority over it, and send it either to the PlayerArea or EnemyArea, accordingly. For the latter, flip it so the player can't see the front!
-        if (type == "Dealt")
-        {
+        if (type == "Dealt"){
             if (hasAuthority)
             {
                 card.transform.SetParent(PlayerArea.transform, false);
@@ -193,7 +192,67 @@ public class PlayerManager : NetworkBehaviour
                 card.GetComponent<CardFlipper>().Flip();
             }
         }
-        //if the card has been "Played," send it to the DropZone. If this Client doesn't have authority over it, flip it so the player can now see the front!
+        // The card has been played check if it is an attack card
+        else if (card.tag == "Attack") {
+            if (hasAuthority) {
+                Transform child = null;
+                if (playAreaName == "EnemyArea (1)") {
+                    child = EnemyArea1.transform.GetChild(EnemyArea1.transform.childCount - 1);
+                } else if (playAreaName == "EnemyArea (2)") {
+                    child = EnemyArea2.transform.GetChild(EnemyArea2.transform.childCount - 1);
+                } else if (playAreaName == "EnemyArea (3)") {
+                    child = EnemyArea3.transform.GetChild(EnemyArea3.transform.childCount - 1);
+                } else if (playAreaName == "EnemyArea (4)") {
+                    child = EnemyArea4.transform.GetChild(EnemyArea4.transform.childCount - 1);
+                } else if (playAreaName == "EnemyArea (5)") {
+                    child = EnemyArea5.transform.GetChild(EnemyArea5.transform.childCount - 1);
+                } else if (playAreaName == "EnemyArea (6)") {
+                    child = EnemyArea6.transform.GetChild(EnemyArea6.transform.childCount - 1);
+                } else if (playAreaName == "EnemyArea (7)") {
+                    child = EnemyArea7.transform.GetChild(EnemyArea7.transform.childCount - 1);
+                } else if (playAreaName == "EnemyArea (8)") {
+                    child = EnemyArea8.transform.GetChild(EnemyArea8.transform.childCount - 1);
+                }
+
+                if (child != null) {
+                    // Remove asset or defence as well as the used up attack card
+                    Destroy(child.gameObject);
+                    Destroy(card);
+                    Debug.Log("Child succesfully removed for authority drop zone" + playAreaName);
+                } else {
+                    Debug.Log("Child is null for drop zone" + playAreaName);
+                }
+
+            } else {
+                Transform child = null;
+                if (playAreaName == "EnemyArea (1)") {
+                    child = SpaceArea1.transform.GetChild(SpaceArea1.transform.childCount - 1);
+                } else if (playAreaName == "EnemyArea (2)") {
+                    child = SpaceArea2.transform.GetChild(SpaceArea2.transform.childCount - 1);
+                } else if (playAreaName == "EnemyArea (3)") {
+                    child = SpaceArea3.transform.GetChild(SpaceArea3.transform.childCount - 1);
+                } else if (playAreaName == "EnemyArea (4)") {
+                    child = SpaceArea4.transform.GetChild(SpaceArea4.transform.childCount - 1);
+                } else if (playAreaName == "EnemyArea (5)") {
+                    child = SpaceArea5.transform.GetChild(SpaceArea5.transform.childCount - 1);
+                } else if (playAreaName == "EnemyArea (6)") {
+                    child = SpaceArea6.transform.GetChild(SpaceArea6.transform.childCount - 1);
+                } else if (playAreaName == "EnemyArea (7)") {
+                    child = SpaceArea7.transform.GetChild(SpaceArea7.transform.childCount - 1);
+                } else if (playAreaName == "EnemyArea (8)") {
+                    child = SpaceArea8.transform.GetChild(SpaceArea8.transform.childCount - 1);
+                }
+                if (child != null) {
+                    // Remove asset or defence as well as the used up attack card
+                    Destroy(child.gameObject);
+                    Destroy(card);
+                    Debug.Log("Child succesfully removed for no authority drop zone" + playAreaName);
+                } else {
+                    Debug.Log("Child is null for no authority drop zone" + playAreaName);
+                }
+            }
+        }
+        //if the card has been "Played," and is not an attack card send it to the DropZone. If this Client doesn't have authority over it, flip it so the player can now see the front!
         else if (type == "Played")
         {
             if (hasAuthority) {

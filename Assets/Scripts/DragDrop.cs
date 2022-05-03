@@ -87,7 +87,10 @@ public class DragDrop : NetworkBehaviour
         //if the gameobject is put in a dropzone, set it as a child of the dropzone and access the PlayerManager of this client to let the server know a card has been played
         if (isOverDropZone && isValidMove(gameObject.tag, startParent.name, dropZone))
         {
-            transform.SetParent(dropZone.transform, false);
+            if (gameObject.tag != "Attack") {
+                transform.SetParent(dropZone.transform, false);
+            }
+            
             isDraggable = false;
             beenPlayed = true;
             NetworkIdentity networkIdentity = NetworkClient.connection.identity;
@@ -107,14 +110,21 @@ public class DragDrop : NetworkBehaviour
         // - Asset and Defence tag cards can be placed our players side zones
         // - A defence card must be placed ON an asset, hence an asset must be placed first in a zone then a defence card
         // - Maximum two cards per zone (first must be asset, second must be defence)
-
-        if (tag == "Asset") {
-            return endZone.transform.childCount == 0;
-        } else if (tag == "Defence") {
-            return endZone.transform.childCount == 1;
-        } else if (tag == "Attack") {
-            return false;
+        if (endZone.name.StartsWith("SpaceArea")) {
+            if (tag == "Asset") {
+                return endZone.transform.childCount == 0;
+            } else if (tag == "Defence") {
+                return endZone.transform.childCount == 1;
+            } else if (tag == "Attack") {
+                return false;
+            }
+        } else if (endZone.name.StartsWith("EnemyArea")) {
+            if (tag == "Attack" && endZone.transform.childCount > 0) {
+                // Delete last child if it exists do in CmdPlayCard
+                return true;
+            }
         }
+        
         return false;
     }
 
