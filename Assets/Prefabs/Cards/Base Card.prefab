@@ -348,8 +348,8 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
         - m_Target: {fileID: 5260648829126047132}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: OnHoverExit
+          m_TargetAssemblyTypeName: CardZoom, Assembly-CSharp
+          m_MethodName: OnMouseDrag
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

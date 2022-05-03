@@ -67,9 +67,11 @@ public class CardZoom : NetworkBehaviour, IPointerEnterHandler, IPointerExitHand
         zoomCard = null;
     }
 
-    public void StartDrag()
+    public void OnMouseDrag()
     {
+        if (zoomCard == null) return;
         // Cancel zoom when player picks up card
+        Debug.Log("Cancelling zoomCard due to drag");
         Destroy(zoomCard);
         zoomCard = null;
     }
