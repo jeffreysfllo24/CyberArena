@@ -103,6 +103,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3730621967362308015, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
+      propertyPath: m_text
+      value: 'An unsecured WiFi network requires no authentication to establish a
+        network connection. While this may look tempting, a hacker could pretend
+        to be a legitimate WiFi network and look through the data you send! Only
+        connect to WiFi networks you trust, and utilize a virtual private network
+        (VPN) connection to ensure data is strongly encrypted. '
+      objectReference: {fileID: 0}
     - target: {fileID: 5497079576747633797, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
       propertyPath: m_Sprite
       value: 
