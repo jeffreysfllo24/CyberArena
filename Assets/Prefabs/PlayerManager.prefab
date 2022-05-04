@@ -51,12 +51,15 @@ MonoBehaviour:
   DefenceCards:
   - {fileID: 6421732103178852151, guid: 6f00734e0b95e429e80f42210b8188b7, type: 3}
   - {fileID: 8217298746475920730, guid: cabec5c2d34304dce991a565b114f865, type: 3}
+  - {fileID: 8184406980215109952, guid: 0e9b62ad487524a8cb653d1d01a471b5, type: 3}
   AssetCards:
   - {fileID: 7020940998041036172, guid: 4b61634b67cd34c64b6eab2ed82a393e, type: 3}
   - {fileID: 8513543153122203168, guid: 018ad5e16ff87466fa0306458af024e5, type: 3}
+  - {fileID: 5812912182058654722, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
   AttackCards:
   - {fileID: 1285085978387682049, guid: b0034f346a20b4859bf9d6d6c62f89e8, type: 3}
   - {fileID: 5208980766125673324, guid: f8db5b6276228415094da1619669e182, type: 3}
+  - {fileID: 6109762989455428274, guid: 480fbc07caf944628be64e3e302d6abd, type: 3}
   SpaceArea1: {fileID: 0}
   SpaceArea2: {fileID: 0}
   SpaceArea3: {fileID: 0}

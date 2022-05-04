@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2487249961863306627
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 907187990561834011, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_Name
+      value: BestPracticesZoom
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708416065741454037, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_text
+      value: Best Practices
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 72
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 106.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7371756045093627011, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_text
+      value: There are certain things to look out for when identifying a phishing
+        scam. Emails with typos, or from senders who you don't recognize, or with
+        strange links could be attackers. If an email has a link to a website, its
+        often better to search up the website on your search engine and access it
+        there.
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847820075735512046, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847820075735512046, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847820075735512046, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_Color.r
+      value: 0.068776965
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
