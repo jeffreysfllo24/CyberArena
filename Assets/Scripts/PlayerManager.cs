@@ -37,6 +37,10 @@ public class PlayerManager : NetworkBehaviour
 
     //the cards List represents our deck of cards
     List<GameObject> cards = new List<GameObject>();
+
+    List<GameObject> safeAreaList = new List<GameObject>();
+
+    List<GameObject> enemyAreaList = new List<GameObject>();
     public bool isPlayerTurn = false; // Boolean indiciating whether it is the current players turn
 
     public override void OnStartClient()
@@ -67,22 +71,40 @@ public class PlayerManager : NetworkBehaviour
 
     void setAreas() {
         SpaceArea1 = GameObject.Find("SpaceArea (1)");
+        safeAreaList.Add(SpaceArea1);
+
         SpaceArea2 = GameObject.Find("SpaceArea (2)");
+        safeAreaList.Add(SpaceArea2);
+
         SpaceArea3 = GameObject.Find("SpaceArea (3)");
+        safeAreaList.Add(SpaceArea3);
         SpaceArea4 = GameObject.Find("SpaceArea (4)");
+        safeAreaList.Add(SpaceArea4);
         SpaceArea5 = GameObject.Find("SpaceArea (5)");
+        safeAreaList.Add(SpaceArea5);
         SpaceArea6 = GameObject.Find("SpaceArea (6)");
+        safeAreaList.Add(SpaceArea6);
         SpaceArea7 = GameObject.Find("SpaceArea (7)");
+        safeAreaList.Add(SpaceArea7);
         SpaceArea8 = GameObject.Find("SpaceArea (8)");
+        safeAreaList.Add(SpaceArea8);
 
         EnemyArea1 = GameObject.Find("EnemyArea (1)");
+        enemyAreaList.Add(EnemyArea1);
         EnemyArea2 = GameObject.Find("EnemyArea (2)");
+        enemyAreaList.Add(EnemyArea2);
         EnemyArea3 = GameObject.Find("EnemyArea (3)");
+        enemyAreaList.Add(EnemyArea3);
         EnemyArea4 = GameObject.Find("EnemyArea (4)");
+        enemyAreaList.Add(EnemyArea4);
         EnemyArea5 = GameObject.Find("EnemyArea (5)");
+        enemyAreaList.Add(EnemyArea5);
         EnemyArea6 = GameObject.Find("EnemyArea (6)");
+        enemyAreaList.Add(EnemyArea6);
         EnemyArea7 = GameObject.Find("EnemyArea (7)");
+        enemyAreaList.Add(EnemyArea7);
         EnemyArea8 = GameObject.Find("EnemyArea (8)");
+        enemyAreaList.Add(EnemyArea8);
     }
 
     void updateTurnStatus(bool isPlayerTurnVal) {
@@ -326,11 +348,17 @@ public class PlayerManager : NetworkBehaviour
         // calculate score
         if (pm.isPlayerTurn) {
             Debug.Log("Number of assets: " + AssetArea.transform.childCount);
-            pm.playerScore += AssetArea.transform.childCount;
+            foreach(var safeArea in safeAreaList)
+            {
+                pm.playerScore += (safeArea.transform.childCount > 0) ? 1:0;
+            }
             pm.PlayerScoreText.text = pm.playerScore.ToString();
         } else {
             Debug.Log("Number of enemy assets: " + AssetArea.transform.childCount);
-            pm.enemyScore += EnemyAssetArea.transform.childCount;
+            foreach(var enemyArea in enemyAreaList)
+            {
+                pm.enemyScore += (enemyArea.transform.childCount > 0) ? 1:0;
+            }
             pm.EnemyScoreText.text = pm.enemyScore.ToString();
         }
 
