@@ -14,15 +14,24 @@ public class GameManager : NetworkBehaviour
         TurnsPlayed++;
     }
 
+    public void ResetTurnsPlayed()
+    {
+        TurnsPlayed = 0;
+    }
+
     public void CmdUpdatePlayerConnected()
     {
         playersConnected += 1;
 
         // Check if two players connected
         if (playersConnected > 1) {
-            NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-            PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
-            pm.RpcInitiateGame();
+            initiateGame();
         }
+    }
+
+    public void initiateGame() {
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        pm.RpcInitiateGame();
     }
 }

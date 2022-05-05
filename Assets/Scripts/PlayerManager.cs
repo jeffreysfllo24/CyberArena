@@ -5,6 +5,7 @@ using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 //the PlayerManager is the main controller script that can act as Server, Client, and Host (Server/Client). Like all network scripts, it must derive from NetworkBehaviour (instead of the standard MonoBehaviour)
 public class PlayerManager : NetworkBehaviour
@@ -35,6 +36,8 @@ public class PlayerManager : NetworkBehaviour
     public TextMeshProUGUI EnemyScoreText;
     public TextMeshProUGUI TurnCounterText;
 
+    public GameObject ResetButton;
+
     //the cards List represents our deck of cards
     List<GameObject> cards = new List<GameObject>();
 
@@ -45,6 +48,8 @@ public class PlayerManager : NetworkBehaviour
 
     public override void OnStartClient()
     {
+        Debug.Log("onStartClient Callled");
+
         base.OnStartClient();
 
         PlayerArea = GameObject.Find("PlayerArea");
@@ -58,12 +63,15 @@ public class PlayerManager : NetworkBehaviour
         PlayerScoreText = Hud.transform.Find("PlayerScore").GetComponent<TextMeshProUGUI>();
         EnemyScoreText = Hud.transform.Find("EnemyScore").GetComponent<TextMeshProUGUI>();
         TurnCounterText = Hud.transform.Find("TurnCounter").GetComponent<TextMeshProUGUI>();
+        ResetButton = GameObject.Find("ResetButton");
+        ResetButton.transform.localScale = new Vector3(0, 0, 0);
 
         setAreas();
 
         if (isServer) {
             isPlayerTurn = true;
         }
+
         updateTurnStatus(isPlayerTurn);
         
         CmdUpdatePlayersConnected();
@@ -115,10 +123,29 @@ public class PlayerManager : NetworkBehaviour
         }
     }
 
+    // [ClientRpc]
+    void RpcUpdateEndGameText(int playerScore, int enemyScore) {        
+        if (ResetButton == null){
+            Debug.Log("Reset Button Null in update endgame text");
+            return;
+        }
+
+        if (playerScore > enemyScore) {
+            ResetButton.transform.Find("EndGameText").GetComponentInChildren<Text>().text = "Congratulations You Win!";
+        } else if (enemyScore > playerScore) {
+            ResetButton.transform.Find("EndGameText").GetComponentInChildren<Text>().text = "You Lost, Better Luck Next Time!";
+        } else {
+            ResetButton.transform.Find("EndGameText").GetComponentInChildren<Text>().text = "It's a Tie!";
+        }
+
+        ResetButton.transform.localScale = new Vector3(1, 1, 1);
+    }
+
     //when the server starts, store Card1 and Card2 in the cards deck. Note that server-only methods require the [Server] attribute immediately preceding them!
     [Server]
     public override void OnStartServer()
     {
+        Debug.Log("onStartServer Callled");
         cards.Add(Encryption);
         cards.Add(Smartphone);
         cards.Add(UnsecuredNetwork);
@@ -157,7 +184,14 @@ public class PlayerManager : NetworkBehaviour
         GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         gm.UpdateTurnsPlayed();
         RpcUpdateTurnCounter(gm.TurnsPlayed);
-        
+    }
+
+    [Command]
+    public void ReplayGame(){
+        Debug.Log("Replay Game called in player manager");
+        RpcResetGame();
+        CmdGameManagerResetTurns();
+        CmdGameManagerInitiateGame();
     }
 
     [ClientRpc]
@@ -167,6 +201,12 @@ public class PlayerManager : NetworkBehaviour
         PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
         // a display turn includes player one and player two taking a turn
         int displayTurn = 1 + turn/2;
+        
+        if (displayTurn > 10) {
+            RpcUpdateEndGameText(pm.playerScore, pm.enemyScore);
+            return;
+        }
+
         pm.TurnCounterText.text = "Turn: " + displayTurn + "/10";
         Debug.Log("Turns Played: " + turn);
     }
@@ -196,7 +236,7 @@ public class PlayerManager : NetworkBehaviour
     [ClientRpc]
     void RpcShowCard(GameObject card, string type, string playAreaName)
     {
-        Debug.Log(playAreaName);
+        // Debug.Log(playAreaName);
 
         //if the card has been "Dealt," determine whether this Client has authority over it, and send it either to the PlayerArea or EnemyArea, accordingly. For the latter, flip it so the player can't see the front!
         if (type == "Dealt"){
@@ -322,8 +362,15 @@ public class PlayerManager : NetworkBehaviour
     [ClientRpc]
     public void RpcInitiateGame()
     {
-        Debug.Log("Game Initiated");
+        Debug.Log("Jeffrey: Game Initiated");
 
+        if(ResetButton != null) {
+            Debug.Log("Client Start Reset Button not Null");
+            ResetButton.transform.localScale = new Vector3(0, 0, 0);
+        } else {
+            Debug.Log("Client Start Reset Button is Null");
+        }
+        
         // Deal 5 cards to each client/player
         NetworkIdentity networkIdentity = NetworkClient.connection.identity;
         PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
@@ -411,5 +458,78 @@ public class PlayerManager : NetworkBehaviour
     {
         card.GetComponent<IncrementClick>().NumberOfClicks++;
         Debug.Log("This card has been clicked " + card.GetComponent<IncrementClick>().NumberOfClicks + " times!");
+    }
+
+    [ClientRpc]
+    void RpcResetGame() {
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+
+        // Delete all cards in safe areas, enemy area, player dealt cards and enemy dealt cards
+        deleteListChildren(pm.safeAreaList);
+        deleteListChildren(pm.enemyAreaList);
+        
+        foreach (Transform child in pm.PlayerArea.transform) {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Transform child in pm.EnemyArea.transform) {
+            Destroy(child.gameObject);
+        }
+
+        // Reset the turn and score
+        resetPlayerScoresAndTurn();
+
+        // Set active turn and tell Game Manager to initiate game
+        if (isServer) {
+            pm.isPlayerTurn = true;
+        } else {
+            pm.isPlayerTurn = false;
+        }
+
+        updateTurnStatus(pm.isPlayerTurn);
+
+    }
+
+    void deleteListChildren( List<GameObject> list) {
+        foreach(var gameObject in list) {
+            foreach (Transform child in gameObject.transform) {
+                Destroy(child.gameObject);
+            }
+        }
+    }
+
+    void resetPlayerScoresAndTurn() {
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+
+        pm.playerScore = 0;
+        pm.PlayerScoreText.text = "0";
+        pm.enemyScore = 0;
+        pm.EnemyScoreText.text = "0";
+
+        pm.TurnCounterText.text = "Turn: 1/10";
+    }
+
+    [Server]
+    void CmdGameManagerResetTurns() {
+        GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if (gm != null) {
+            Debug.Log("Game manager in reset is not null");
+            gm.ResetTurnsPlayed();
+        } else {
+            Debug.Log("Game manager in reset is null");
+        }
+    }
+
+    [Server]
+    void CmdGameManagerInitiateGame() {
+        GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if (gm != null) {
+            Debug.Log("Game manager in initiate game is not null");
+            gm.initiateGame();
+        } else {
+            Debug.Log("Game manager in initiate game is null");
+        }
     }
 }
