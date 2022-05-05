@@ -10,14 +10,10 @@ using UnityEngine.SceneManagement;
 //the PlayerManager is the main controller script that can act as Server, Client, and Host (Server/Client). Like all network scripts, it must derive from NetworkBehaviour (instead of the standard MonoBehaviour)
 public class PlayerManager : NetworkBehaviour
 {
-    // Defence Cards
-    public GameObject Encryption;
-
-    // Assets
-    public GameObject Smartphone;
-
-    // Attacks
-    public GameObject UnsecuredNetwork;
+    // Cards
+    public List<GameObject> DefenceCards;
+    public List<GameObject> AssetCards;
+    public List<GameObject> AttackCards;
 
     // Board Locations
     public GameObject SpaceArea1; public GameObject SpaceArea2; public GameObject SpaceArea3; public GameObject SpaceArea4; public GameObject SpaceArea5; public GameObject SpaceArea6; public GameObject SpaceArea7; public GameObject SpaceArea8;
@@ -145,10 +141,9 @@ public class PlayerManager : NetworkBehaviour
     [Server]
     public override void OnStartServer()
     {
-        Debug.Log("onStartServer Callled");
-        cards.Add(Encryption);
-        cards.Add(Smartphone);
-        cards.Add(UnsecuredNetwork);
+        cards.AddRange(DefenceCards);
+        cards.AddRange(AssetCards);
+        cards.AddRange(AttackCards);
     }
     
     //Commands are methods requested by Clients to run on the Server, and require the [Command] attribute immediately preceding them. CmdDealCards() is called by the DrawCards script attached to the client Button
@@ -201,7 +196,7 @@ public class PlayerManager : NetworkBehaviour
         PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
         // a display turn includes player one and player two taking a turn
         int displayTurn = 1 + turn/2;
-        
+
         if (displayTurn > 10) {
             RpcUpdateEndGameText(pm.playerScore, pm.enemyScore);
             return;

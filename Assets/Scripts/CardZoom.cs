@@ -19,6 +19,8 @@ public class CardZoom : NetworkBehaviour, IPointerEnterHandler, IPointerExitHand
     float y1;
     float y2;
 
+    bool isDragging;
+
     public void Awake()
     {
         Canvas = GameObject.Find("Main Canvas");
@@ -28,7 +30,7 @@ public class CardZoom : NetworkBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
         // only create one zoom card at a time
-        if (zoomCard != null) return;
+        if (zoomCard != null || isDragging) return;
 
         //determine whether the client hasAuthority over this gameobject
         bool cardBeenPlayed = gameObject.GetComponent<DragDrop>().beenPlayed;
@@ -67,12 +69,18 @@ public class CardZoom : NetworkBehaviour, IPointerEnterHandler, IPointerExitHand
         zoomCard = null;
     }
 
-    public void OnMouseDrag()
+    public void StartDrag()
     {
         if (zoomCard == null) return;
+        isDragging = true;
         // Cancel zoom when player picks up card
         Debug.Log("Cancelling zoomCard due to drag");
         Destroy(zoomCard);
         zoomCard = null;
+    }
+
+    public void EndDrag()
+    {
+        isDragging = false;
     }
 }
