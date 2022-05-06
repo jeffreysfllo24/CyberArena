@@ -3,35 +3,53 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class GameManager : NetworkBehaviour
-{
-    //This simple GameManager script is attached to a Server-only game object, demonstrating how to implement game logic tracked by the Server
-    public int TurnsPlayed = 0;
-    private int playersConnected = 0;
+namespace MirrorBasics {
 
-    public void UpdateTurnsPlayed()
+    public class GameManager : NetworkBehaviour
     {
-        TurnsPlayed++;
-    }
+        //This simple GameManager script is attached to a Server-only game object, demonstrating how to implement game logic tracked by the Server
+        public int TurnsPlayed = 0;
+        private int playersConnected = 0;
 
-    public void ResetTurnsPlayed()
-    {
-        TurnsPlayed = 0;
-    }
-
-    public void CmdUpdatePlayerConnected()
-    {
-        playersConnected += 1;
-
-        // Check if two players connected
-        if (playersConnected > 1) {
-            initiateGame();
+        void Start () {
+            Debug.Log("Game Manager Awake!");
+            NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+            awakeGameObjects();
         }
-    }
 
-    public void initiateGame() {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
-        pm.RpcInitiateGame();
+        public void UpdateTurnsPlayed()
+        {
+            TurnsPlayed++;
+        }
+
+        public void ResetTurnsPlayed()
+        {
+            TurnsPlayed = 0;
+        }
+
+        public void CmdUpdatePlayerConnected()
+        {
+            playersConnected += 1;
+
+            // Check if two players connected
+            if (playersConnected > 1) {
+                initiateGame();
+            }
+        }
+
+
+        [Server]
+        void awakeGameObjects() {
+            NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+            PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+            pm.RpcPopulateGameObjects();
+            pm.RpcInitiateGame();
+        }
+
+        public void initiateGame() {
+            NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+            PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+            pm.RpcInitiateGame();
+        }
     }
 }
