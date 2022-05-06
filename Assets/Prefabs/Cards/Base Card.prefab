@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 8985214135543204421}
   - component: {fileID: 3418795157803304274}
   - component: {fileID: 8058706333344003115}
+  - component: {fileID: 7548005792529003497}
   m_Layer: 6
   m_Name: CardBack
   m_TagString: Untagged
@@ -219,7 +220,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4e4aee57c5fbc4fa8925c48159164284, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 33ee266dea6f049bc8a4e2722e79ec1d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -229,6 +230,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7548005792529003497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5070027031164889289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &6698809748210893588
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,7 +564,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 30, y: 44.25}
+  m_Size: {x: 72, y: 106.2}
   m_EdgeRadius: 0
 --- !u!50 &7744089266410765899
 Rigidbody2D:

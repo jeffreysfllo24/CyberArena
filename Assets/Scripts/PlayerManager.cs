@@ -33,15 +33,13 @@ namespace MirrorBasics {
     public List<GameObject> AttackCards;
 
     // Board Locations
-    public GameObject SpaceArea1; public GameObject SpaceArea2; public GameObject SpaceArea3; public GameObject SpaceArea4; public GameObject SpaceArea5; public GameObject SpaceArea6; public GameObject SpaceArea7; public GameObject SpaceArea8;
+    public GameObject SpaceArea1; public GameObject SpaceArea2; public GameObject SpaceArea3; public GameObject SpaceArea4; public GameObject SpaceArea5; public GameObject SpaceArea6;
 
-    public GameObject EnemyArea1; public GameObject EnemyArea2; public GameObject EnemyArea3; public GameObject EnemyArea4; public GameObject EnemyArea5; public GameObject EnemyArea6; public GameObject EnemyArea7; public GameObject EnemyArea8;
-    public GameObject PlayerArea;
-    public GameObject EnemyArea;
-    public GameObject AssetArea;
-    public GameObject DefenceArea;
-    public GameObject EnemyAssetArea;
-    public GameObject EnemyDefenceArea;
+    public GameObject EnemyArea1; public GameObject EnemyArea2; public GameObject EnemyArea3; public GameObject EnemyArea4; public GameObject EnemyArea5; public GameObject EnemyArea6;
+    public GameObject PlayerHandArea;
+    public GameObject EnemyHandArea;
+    public GameObject PlayerCardArea;
+    public GameObject EnemyCardArea;
 
     private int playerScore = 0;
     private int enemyScore = 0;
@@ -87,14 +85,11 @@ namespace MirrorBasics {
     public void RpcPopulateGameObjects() {
         NetworkIdentity networkIdentity = NetworkClient.connection.identity;
         PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
-        pm.PlayerArea = GameObject.Find("PlayerArea");
-        Debug.Log("RPCPopulateGameObjects Play area is null:" + (pm.PlayerArea == null));
 
-        pm.EnemyArea = GameObject.Find("EnemyArea");
-        pm.AssetArea = GameObject.Find("AssetArea");
-        pm.DefenceArea = GameObject.Find("DefenceArea");
-        pm.EnemyAssetArea = GameObject.Find("EnemyAssetArea");
-        pm.EnemyDefenceArea = GameObject.Find("EnemyDefenceArea");
+        pm.PlayerHandArea = GameObject.Find("PlayerHandArea");
+        pm.EnemyHandArea = GameObject.Find("EnemyHandArea");
+        pm.PlayerCardArea = GameObject.Find("PlayerCardArea");
+        pm.EnemyCardArea = GameObject.Find("EnemyCardArea");
 
         GameObject Hud = GameObject.Find("HUD");
         pm.PlayerScoreText = Hud.transform.Find("PlayerScore").GetComponent<TextMeshProUGUI>();
@@ -131,10 +126,6 @@ namespace MirrorBasics {
         pm.safeAreaList.Add(pm.SpaceArea5);
         pm.SpaceArea6 = GameObject.Find("SpaceArea (6)");
         pm.safeAreaList.Add(pm.SpaceArea6);
-        pm.SpaceArea7 = GameObject.Find("SpaceArea (7)");
-        pm.safeAreaList.Add(pm.SpaceArea7);
-        pm.SpaceArea8 = GameObject.Find("SpaceArea (8)");
-        pm.safeAreaList.Add(pm.SpaceArea8);
 
         pm.EnemyArea1 = GameObject.Find("EnemyArea (1)");
         pm.enemyAreaList.Add(pm.EnemyArea1);
@@ -148,17 +139,13 @@ namespace MirrorBasics {
         pm.enemyAreaList.Add(pm.EnemyArea5);
         pm.EnemyArea6 = GameObject.Find("EnemyArea (6)");
         pm.enemyAreaList.Add(pm.EnemyArea6);
-        pm.EnemyArea7 = GameObject.Find("EnemyArea (7)");
-        pm.enemyAreaList.Add(pm.EnemyArea7);
-        pm.EnemyArea8 = GameObject.Find("EnemyArea (8)");
-        pm.enemyAreaList.Add(pm.EnemyArea8);
     }
 
     void updateTurnStatus(bool isPlayerTurnVal) {
         if (isPlayerTurnVal) {
-            GameObject.Find("Button").GetComponentInChildren<Text>().text = "End Turn";
+            GameObject.Find("Button").GetComponentInChildren<TextMeshProUGUI>().text = "End Turn";
         } else {
-            GameObject.Find("Button").GetComponentInChildren<Text>().text = "Enemy Turn";
+            GameObject.Find("Button").GetComponentInChildren<TextMeshProUGUI>().text = "Enemy Turn";
         }
     }
 
@@ -285,17 +272,16 @@ namespace MirrorBasics {
     {
         NetworkIdentity networkIdentity = NetworkClient.connection.identity;
         PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
-        Debug.Log("RPCShowCard Play area is null:" + (pm.PlayerArea == null));
 
-        //if the card has been "Dealt," determine whether this Client has authority over it, and send it either to the PlayerArea or EnemyArea, accordingly. For the latter, flip it so the player can't see the front!
+        //if the card has been "Dealt," determine whether this Client has authority over it, and send it either to the PlayerHandArea or EnemyArea, accordingly. For the latter, flip it so the player can't see the front!
         if (type == "Dealt"){
             if (hasAuthority)
             {
-                card.transform.SetParent(pm.PlayerArea.transform, false);
+                card.transform.SetParent(pm.PlayerHandArea.transform, false);
             }
             else
             {
-                card.transform.SetParent(pm.EnemyArea.transform, false);
+                card.transform.SetParent(pm.EnemyHandArea.transform, false);
                 card.GetComponent<CardFlipper>().Flip();
             }
         }
@@ -315,10 +301,6 @@ namespace MirrorBasics {
                     child = pm.EnemyArea5.transform.GetChild(pm.EnemyArea5.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (6)") {
                     child = pm.EnemyArea6.transform.GetChild(pm.EnemyArea6.transform.childCount - 1);
-                } else if (playAreaName == "EnemyArea (7)") {
-                    child = pm.EnemyArea7.transform.GetChild(pm.EnemyArea7.transform.childCount - 1);
-                } else if (playAreaName == "EnemyArea (8)") {
-                    child = pm.EnemyArea8.transform.GetChild(pm.EnemyArea8.transform.childCount - 1);
                 }
 
                 if (child != null) {
@@ -344,10 +326,6 @@ namespace MirrorBasics {
                     child = pm.SpaceArea5.transform.GetChild(pm.SpaceArea5.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (6)") {
                     child = pm.SpaceArea6.transform.GetChild(pm.SpaceArea6.transform.childCount - 1);
-                } else if (playAreaName == "EnemyArea (7)") {
-                    child = pm.SpaceArea7.transform.GetChild(pm.SpaceArea7.transform.childCount - 1);
-                } else if (playAreaName == "EnemyArea (8)") {
-                    child = pm.SpaceArea8.transform.GetChild(pm.SpaceArea8.transform.childCount - 1);
                 }
                 if (child != null) {
                     // Remove asset or defence as well as the used up attack card
@@ -375,10 +353,6 @@ namespace MirrorBasics {
                     card.transform.SetParent(pm.SpaceArea5.transform, false);
                 } else if (playAreaName == "SpaceArea (6)") {
                     card.transform.SetParent(pm.SpaceArea6.transform, false);
-                } else if (playAreaName == "SpaceArea (7)") {
-                    card.transform.SetParent(pm.SpaceArea7.transform, false);
-                } else if (playAreaName == "SpaceArea (8)") {
-                    card.transform.SetParent(pm.SpaceArea8.transform, false);
                 }
             } else {
                 if (playAreaName == "SpaceArea (1)") {
@@ -393,10 +367,6 @@ namespace MirrorBasics {
                     card.transform.SetParent(pm.EnemyArea5.transform, false);
                 } else if (playAreaName == "SpaceArea (6)") {
                     card.transform.SetParent(pm.EnemyArea6.transform, false);
-                } else if (playAreaName == "SpaceArea (7)") {
-                    card.transform.SetParent(pm.EnemyArea7.transform, false);
-                } else if (playAreaName == "SpaceArea (8)") {
-                    card.transform.SetParent(pm.EnemyArea8.transform, false);
                 }
             }
 
@@ -517,11 +487,11 @@ namespace MirrorBasics {
         deleteListChildren(pm.safeAreaList);
         deleteListChildren(pm.enemyAreaList);
         
-        foreach (Transform child in pm.PlayerArea.transform) {
+        foreach (Transform child in pm.PlayerHandArea.transform) {
             Destroy(child.gameObject);
         }
 
-        foreach (Transform child in pm.EnemyArea.transform) {
+        foreach (Transform child in pm.EnemyHandArea.transform) {
             Destroy(child.gameObject);
         }
 
