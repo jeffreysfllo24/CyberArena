@@ -41,7 +41,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1636653694350864026, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 106.2
+      value: 86
       objectReference: {fileID: 0}
     - target: {fileID: 1636653694350864026, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -93,11 +93,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2807047706157853687, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2807047706157853687, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_Color.g
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2807047706157853687, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_Color.r
@@ -107,6 +107,10 @@ PrefabInstance:
       propertyPath: ZoomCard
       value: 
       objectReference: {fileID: 5625215322051405551, guid: f74c74679ecbd43e488979e4c0107a73, type: 3}
+    - target: {fileID: 5043050020435126192, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 43203a07339744eb5a645d54a00da793, type: 3}
     - target: {fileID: 5812912182058654722, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_Name
       value: Phishing
@@ -115,6 +119,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Attack
       objectReference: {fileID: 0}
+    - target: {fileID: 6633983617064887982, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d6a3753ce5ce344ac98353a0b9e96902, type: 3}
     - target: {fileID: 8029893709025692098, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_AssetId
       value: 480fbc07caf944628be64e3e302d6abd

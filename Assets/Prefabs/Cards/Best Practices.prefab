@@ -41,7 +41,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1636653694350864026, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 106.2
+      value: 86
       objectReference: {fileID: 0}
     - target: {fileID: 1636653694350864026, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -93,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2807047706157853687, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2807047706157853687, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_Color.g
@@ -101,12 +101,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2807047706157853687, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_Color.r
-      value: 0.068776965
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4998145738283985546, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: ZoomCard
       value: 
       objectReference: {fileID: 3319863219774232984, guid: 1c1f8951da7ca4943a2d5751f86846b1, type: 3}
+    - target: {fileID: 5043050020435126192, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 24ced14ce09884f5b9df877c9da62c8c, type: 3}
     - target: {fileID: 5812912182058654722, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_Name
       value: Best Practices
@@ -115,6 +119,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Defence
       objectReference: {fileID: 0}
+    - target: {fileID: 6633983617064887982, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8cb0a5ae53706486cbdcb022a8513a6a, type: 3}
     - target: {fileID: 8029893709025692098, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_AssetId
       value: 0e9b62ad487524a8cb653d1d01a471b5
@@ -125,6 +133,14 @@ PrefabInstance:
 
         Practices'
       objectReference: {fileID: 0}
+    - target: {fileID: 8767202739029484236, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
+      propertyPath: m_enableWordWrapping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8896583914974762034, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0dfaf93a9a0bb4e5cb9f73e9c27e4cab, type: 3}
     - target: {fileID: 8937591256171678915, guid: f916e2b1b06e540bfbd779eb1c713f6d, type: 3}
       propertyPath: m_TagString
       value: Defence

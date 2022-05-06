@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1554337338199239705, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d6a3753ce5ce344ac98353a0b9e96902, type: 3}
     - target: {fileID: 2234770969351300527, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -41,7 +45,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2234770969351300527, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 106.2
+      value: 86
       objectReference: {fileID: 0}
     - target: {fileID: 2234770969351300527, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -93,11 +97,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3405192468143677634, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
       propertyPath: m_Color.b
-      value: 0.14117648
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3405192468143677634, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
       propertyPath: m_Color.g
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3405192468143677634, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
       propertyPath: m_Color.r
@@ -114,7 +118,7 @@ PrefabInstance:
     - target: {fileID: 5497079576747633797, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 80749e8df2e174a6c81080424a801d7b, type: 3}
+      objectReference: {fileID: 21300000, guid: ec584154fce4d422789c68978f34860a, type: 3}
     - target: {fileID: 6421732103178852151, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
       propertyPath: m_Name
       value: UnsecuredNetworkZoom

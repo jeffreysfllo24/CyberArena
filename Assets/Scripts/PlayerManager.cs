@@ -418,13 +418,13 @@ namespace MirrorBasics {
             {
                 pm.playerScore += (safeArea.transform.childCount > 0) ? 1:0;
             }
-            pm.PlayerScoreText.text = pm.playerScore.ToString();
+            pm.PlayerScoreText.text = "Player score: " + pm.playerScore.ToString();
         } else {
             foreach(var enemyArea in pm.enemyAreaList)
             {
                 pm.enemyScore += (enemyArea.transform.childCount > 0) ? 1:0;
             }
-            pm.EnemyScoreText.text = pm.enemyScore.ToString();
+            pm.EnemyScoreText.text = "Opponent score: " + pm.enemyScore.ToString();
         }
 
         pm.isPlayerTurn = !pm.isPlayerTurn;

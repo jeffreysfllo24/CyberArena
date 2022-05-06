@@ -11,10 +11,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: BestPracticesZoom
       objectReference: {fileID: 0}
+    - target: {fileID: 1856016555089477545, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 24ced14ce09884f5b9df877c9da62c8c, type: 3}
     - target: {fileID: 2708416065741454037, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
       propertyPath: m_text
       value: Best Practices
       objectReference: {fileID: 0}
+    - target: {fileID: 2831186985531706411, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0dfaf93a9a0bb4e5cb9f73e9c27e4cab, type: 3}
+    - target: {fileID: 2831186985531706411, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4619132374444097333, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8cb0a5ae53706486cbdcb022a8513a6a, type: 3}
     - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -49,7 +65,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 106.2
+      value: 86
       objectReference: {fileID: 0}
     - target: {fileID: 5371643862626924163, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
       propertyPath: m_LocalPosition.x
@@ -109,7 +125,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8847820075735512046, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8847820075735512046, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
       propertyPath: m_Color.g
@@ -117,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8847820075735512046, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}
       propertyPath: m_Color.r
-      value: 0.068776965
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b7ec817461c84391896fe80edfc7474, type: 3}

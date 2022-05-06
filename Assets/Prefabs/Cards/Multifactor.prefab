@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 34077941117116885, guid: 018ad5e16ff87466fa0306458af024e5, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 34077941117116885, guid: 018ad5e16ff87466fa0306458af024e5, type: 3}
       propertyPath: m_Color.g
@@ -17,7 +17,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 34077941117116885, guid: 018ad5e16ff87466fa0306458af024e5, type: 3}
       propertyPath: m_Color.r
-      value: 0.07058824
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3475439079564666040, guid: 018ad5e16ff87466fa0306458af024e5, type: 3}
       propertyPath: m_Pivot.x
@@ -53,7 +53,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3475439079564666040, guid: 018ad5e16ff87466fa0306458af024e5, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 106.2
+      value: 86
       objectReference: {fileID: 0}
     - target: {fileID: 3475439079564666040, guid: 018ad5e16ff87466fa0306458af024e5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -109,8 +109,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6856429991157328110, guid: 018ad5e16ff87466fa0306458af024e5, type: 3}
       propertyPath: m_text
-      value: Multi-factor Authentication
+      value: "Multi-factor\n Authentication"
       objectReference: {fileID: 0}
+    - target: {fileID: 7165563418972564882, guid: 018ad5e16ff87466fa0306458af024e5, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3dbb1e04f25724a92a08e7f47667de99, type: 3}
     - target: {fileID: 7192611038240956584, guid: 018ad5e16ff87466fa0306458af024e5, type: 3}
       propertyPath: ZoomCard
       value: 
@@ -123,5 +127,9 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Defence
       objectReference: {fileID: 0}
+    - target: {fileID: 8835242522247867532, guid: 018ad5e16ff87466fa0306458af024e5, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8cb0a5ae53706486cbdcb022a8513a6a, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 018ad5e16ff87466fa0306458af024e5, type: 3}

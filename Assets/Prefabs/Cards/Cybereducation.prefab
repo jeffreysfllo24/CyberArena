@@ -41,7 +41,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1939891388698096012, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 106.2
+      value: 86
       objectReference: {fileID: 0}
     - target: {fileID: 1939891388698096012, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -93,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3074212699525117153, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3074212699525117153, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
       propertyPath: m_Color.g
@@ -101,7 +101,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3074212699525117153, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
       propertyPath: m_Color.r
-      value: 0.068776965
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3158037286621998988, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 3158037286621998988, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3158037286621998988, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -31
       objectReference: {fileID: 0}
     - target: {fileID: 5260648829126047132, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
       propertyPath: ZoomCard
@@ -110,6 +122,10 @@ PrefabInstance:
     - target: {fileID: 5305781782516512934, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
       propertyPath: m_Sprite
       value: 
+      objectReference: {fileID: 21300000, guid: d2cfac772addf402bb552bda8a94a32a, type: 3}
+    - target: {fileID: 5305781782516512934, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6698809748210893588, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
       propertyPath: m_Name
@@ -130,6 +146,6 @@ PrefabInstance:
     - target: {fileID: 8586795222173420324, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 676e60861de7a44598190756a7dd66e2, type: 3}
+      objectReference: {fileID: 21300000, guid: ed0a0b03b83a44f60afe8457c752d75e, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d0737f123b17453aa257f0623cd49c0, type: 3}

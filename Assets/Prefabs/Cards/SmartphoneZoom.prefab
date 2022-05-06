@@ -7,7 +7,19 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1554337338199239705, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 37c6a0572d2e34a9e88743734cf0bd7e, type: 3}
     - target: {fileID: 3000660768705667514, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
+      propertyPath: m_Name
+      value: SmartphoneZoom
+      objectReference: {fileID: 0}
+    - target: {fileID: 5497079576747633797, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 22605afddc58d4d8cb06a15a5695cf92, type: 3}
+    - target: {fileID: 6421732103178852151, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
       propertyPath: m_Name
       value: SmartphoneZoom
       objectReference: {fileID: 0}
@@ -94,6 +106,10 @@ PrefabInstance:
     - target: {fileID: 8050586875038946082, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8078987101522635257, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}
+      propertyPath: m_text
+      value: Smartphone
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30bea1eb08a46413d8e53c04441130a6, type: 3}

@@ -587,7 +587,6 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   Canvas: {fileID: 0}
-  PlayerManager: {fileID: 0}
   beenPlayed: 0
 --- !u!114 &5260648829126047132
 MonoBehaviour:
@@ -617,8 +616,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b5a8533e1dacd43a04d7c80156686c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardFront: {fileID: 21300000, guid: 2c03b0e1d2e524333beee2fba7f7e3dc, type: 3}
-  CardBack: {fileID: 21300000, guid: 4e4aee57c5fbc4fa8925c48159164284, type: 3}
 --- !u!114 &8440760454592797365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -633,7 +630,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  PlayerManager: {fileID: 0}
 --- !u!114 &-158450864333530796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -648,7 +644,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  PlayerManager: {fileID: 0}
   NumberOfClicks: 0
 --- !u!114 &-4642173971496775708
 MonoBehaviour:

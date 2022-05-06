@@ -16,7 +16,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1770786602772139002, guid: 12b40477b681d4c60801c45a32d37ecb, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1770786602772139002, guid: 12b40477b681d4c60801c45a32d37ecb, type: 3}
       propertyPath: m_Color.g
@@ -24,8 +24,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1770786602772139002, guid: 12b40477b681d4c60801c45a32d37ecb, type: 3}
       propertyPath: m_Color.r
-      value: 0.07058824
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2468157419125393185, guid: 12b40477b681d4c60801c45a32d37ecb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8cb0a5ae53706486cbdcb022a8513a6a, type: 3}
     - target: {fileID: 2941191204861185687, guid: 12b40477b681d4c60801c45a32d37ecb, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -60,7 +64,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2941191204861185687, guid: 12b40477b681d4c60801c45a32d37ecb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 106.2
+      value: 86
       objectReference: {fileID: 0}
     - target: {fileID: 2941191204861185687, guid: 12b40477b681d4c60801c45a32d37ecb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -120,7 +124,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7983798951066844175, guid: 12b40477b681d4c60801c45a32d37ecb, type: 3}
       propertyPath: m_Name
-      value: MultiFactorZoom
+      value: MultifactorZoom
       objectReference: {fileID: 0}
+    - target: {fileID: 8906775679972132797, guid: 12b40477b681d4c60801c45a32d37ecb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3dbb1e04f25724a92a08e7f47667de99, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 12b40477b681d4c60801c45a32d37ecb, type: 3}
