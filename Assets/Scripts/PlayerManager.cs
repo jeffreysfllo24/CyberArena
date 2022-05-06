@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //the "using Mirror" assembly reference is required on any script that involves networking
@@ -8,9 +9,25 @@ using TMPro;
 using UnityEngine.SceneManagement;
 
 //the PlayerManager is the main controller script that can act as Server, Client, and Host (Server/Client). Like all network scripts, it must derive from NetworkBehaviour (instead of the standard MonoBehaviour)
-public class PlayerManager : NetworkBehaviour
-{
-    // Cards
+namespace MirrorBasics {
+
+    [RequireComponent (typeof (NetworkMatch))]
+    public class PlayerManager : NetworkBehaviour
+    {
+    // Lobby Making Variables -----------------------------
+    public static PlayerManager localPlayer;
+    [SyncVar] public string matchID;
+    [SyncVar] public int playerIndex;
+
+    NetworkMatch networkMatch;
+
+    [SyncVar] public Match currentMatch;
+
+    [SerializeField] GameObject playerLobbyUI;
+
+    Guid netIDGuid;
+
+    // Cards -----------------------------
     public List<GameObject> DefenceCards;
     public List<GameObject> AssetCards;
     public List<GameObject> AttackCards;
@@ -48,67 +65,93 @@ public class PlayerManager : NetworkBehaviour
 
         base.OnStartClient();
 
-        PlayerArea = GameObject.Find("PlayerArea");
-        EnemyArea = GameObject.Find("EnemyArea");
-        AssetArea = GameObject.Find("AssetArea");
-        DefenceArea = GameObject.Find("DefenceArea");
-        EnemyAssetArea = GameObject.Find("EnemyAssetArea");
-        EnemyDefenceArea = GameObject.Find("EnemyDefenceArea");
+        if (isLocalPlayer) {
+            localPlayer = this;
+        } else {
+            Debug.Log ($"Spawning other player UI Prefab");
+            playerLobbyUI = UILobby.instance.SpawnPlayerUIPrefab (this);
+        }
+    }
+
+    public override void OnStopClient () {
+        Debug.Log ($"Client Stopped");
+        ClientDisconnect ();
+    }
+
+    public override void OnStopServer () {
+        Debug.Log ($"Client Stopped on Server");
+        ServerDisconnect ();
+    }
+
+    [ClientRpc]
+    public void RpcPopulateGameObjects() {
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        pm.PlayerArea = GameObject.Find("PlayerArea");
+        Debug.Log("RPCPopulateGameObjects Play area is null:" + (pm.PlayerArea == null));
+
+        pm.EnemyArea = GameObject.Find("EnemyArea");
+        pm.AssetArea = GameObject.Find("AssetArea");
+        pm.DefenceArea = GameObject.Find("DefenceArea");
+        pm.EnemyAssetArea = GameObject.Find("EnemyAssetArea");
+        pm.EnemyDefenceArea = GameObject.Find("EnemyDefenceArea");
 
         GameObject Hud = GameObject.Find("HUD");
-        PlayerScoreText = Hud.transform.Find("PlayerScore").GetComponent<TextMeshProUGUI>();
-        EnemyScoreText = Hud.transform.Find("EnemyScore").GetComponent<TextMeshProUGUI>();
-        TurnCounterText = Hud.transform.Find("TurnCounter").GetComponent<TextMeshProUGUI>();
-        ResetButton = GameObject.Find("ResetButton");
-        ResetButton.transform.localScale = new Vector3(0, 0, 0);
+        pm.PlayerScoreText = Hud.transform.Find("PlayerScore").GetComponent<TextMeshProUGUI>();
+        pm.EnemyScoreText = Hud.transform.Find("EnemyScore").GetComponent<TextMeshProUGUI>();
+        pm.TurnCounterText = Hud.transform.Find("TurnCounter").GetComponent<TextMeshProUGUI>();
+        pm.ResetButton = GameObject.Find("ResetButton");
+        pm.ResetButton.transform.localScale = new Vector3(0, 0, 0);
 
         setAreas();
 
         if (isServer) {
-            isPlayerTurn = true;
+            pm.isPlayerTurn = true;
         }
 
-        updateTurnStatus(isPlayerTurn);
-        
-        CmdUpdatePlayersConnected();
+        updateTurnStatus(pm.isPlayerTurn);
+        // CmdUpdatePlayersConnected();
     }
 
     void setAreas() {
-        SpaceArea1 = GameObject.Find("SpaceArea (1)");
-        safeAreaList.Add(SpaceArea1);
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
 
-        SpaceArea2 = GameObject.Find("SpaceArea (2)");
-        safeAreaList.Add(SpaceArea2);
+        pm.SpaceArea1 = GameObject.Find("SpaceArea (1)");
+        pm.safeAreaList.Add(pm.SpaceArea1);
 
-        SpaceArea3 = GameObject.Find("SpaceArea (3)");
-        safeAreaList.Add(SpaceArea3);
-        SpaceArea4 = GameObject.Find("SpaceArea (4)");
-        safeAreaList.Add(SpaceArea4);
-        SpaceArea5 = GameObject.Find("SpaceArea (5)");
-        safeAreaList.Add(SpaceArea5);
-        SpaceArea6 = GameObject.Find("SpaceArea (6)");
-        safeAreaList.Add(SpaceArea6);
-        SpaceArea7 = GameObject.Find("SpaceArea (7)");
-        safeAreaList.Add(SpaceArea7);
-        SpaceArea8 = GameObject.Find("SpaceArea (8)");
-        safeAreaList.Add(SpaceArea8);
+        pm.SpaceArea2 = GameObject.Find("SpaceArea (2)");
+        pm.safeAreaList.Add(pm.SpaceArea2);
 
-        EnemyArea1 = GameObject.Find("EnemyArea (1)");
-        enemyAreaList.Add(EnemyArea1);
-        EnemyArea2 = GameObject.Find("EnemyArea (2)");
-        enemyAreaList.Add(EnemyArea2);
-        EnemyArea3 = GameObject.Find("EnemyArea (3)");
-        enemyAreaList.Add(EnemyArea3);
-        EnemyArea4 = GameObject.Find("EnemyArea (4)");
-        enemyAreaList.Add(EnemyArea4);
-        EnemyArea5 = GameObject.Find("EnemyArea (5)");
-        enemyAreaList.Add(EnemyArea5);
-        EnemyArea6 = GameObject.Find("EnemyArea (6)");
-        enemyAreaList.Add(EnemyArea6);
-        EnemyArea7 = GameObject.Find("EnemyArea (7)");
-        enemyAreaList.Add(EnemyArea7);
-        EnemyArea8 = GameObject.Find("EnemyArea (8)");
-        enemyAreaList.Add(EnemyArea8);
+        pm.SpaceArea3 = GameObject.Find("SpaceArea (3)");
+        pm.safeAreaList.Add(pm.SpaceArea3);
+        pm.SpaceArea4 = GameObject.Find("SpaceArea (4)");
+        pm.safeAreaList.Add(pm.SpaceArea4);
+        pm.SpaceArea5 = GameObject.Find("SpaceArea (5)");
+        pm.safeAreaList.Add(pm.SpaceArea5);
+        pm.SpaceArea6 = GameObject.Find("SpaceArea (6)");
+        pm.safeAreaList.Add(pm.SpaceArea6);
+        pm.SpaceArea7 = GameObject.Find("SpaceArea (7)");
+        pm.safeAreaList.Add(pm.SpaceArea7);
+        pm.SpaceArea8 = GameObject.Find("SpaceArea (8)");
+        pm.safeAreaList.Add(pm.SpaceArea8);
+
+        pm.EnemyArea1 = GameObject.Find("EnemyArea (1)");
+        pm.enemyAreaList.Add(pm.EnemyArea1);
+        pm.EnemyArea2 = GameObject.Find("EnemyArea (2)");
+        pm.enemyAreaList.Add(pm.EnemyArea2);
+        pm.EnemyArea3 = GameObject.Find("EnemyArea (3)");
+        pm.enemyAreaList.Add(pm.EnemyArea3);
+        pm.EnemyArea4 = GameObject.Find("EnemyArea (4)");
+        pm.enemyAreaList.Add(pm.EnemyArea4);
+        pm.EnemyArea5 = GameObject.Find("EnemyArea (5)");
+        pm.enemyAreaList.Add(pm.EnemyArea5);
+        pm.EnemyArea6 = GameObject.Find("EnemyArea (6)");
+        pm.enemyAreaList.Add(pm.EnemyArea6);
+        pm.EnemyArea7 = GameObject.Find("EnemyArea (7)");
+        pm.enemyAreaList.Add(pm.EnemyArea7);
+        pm.EnemyArea8 = GameObject.Find("EnemyArea (8)");
+        pm.enemyAreaList.Add(pm.EnemyArea8);
     }
 
     void updateTurnStatus(bool isPlayerTurnVal) {
@@ -119,28 +162,37 @@ public class PlayerManager : NetworkBehaviour
         }
     }
 
-    // [ClientRpc]
-    void RpcUpdateEndGameText(int playerScore, int enemyScore) {        
-        if (ResetButton == null){
+    void RpcUpdateEndGameText(int playerScore, int enemyScore) {     
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+
+        if (pm.ResetButton == null){
             Debug.Log("Reset Button Null in update endgame text");
             return;
         }
 
         if (playerScore > enemyScore) {
-            ResetButton.transform.Find("EndGameText").GetComponentInChildren<Text>().text = "Congratulations You Win!";
+            pm.ResetButton.transform.Find("EndGameText").GetComponentInChildren<Text>().text = "Congratulations You Win!";
         } else if (enemyScore > playerScore) {
-            ResetButton.transform.Find("EndGameText").GetComponentInChildren<Text>().text = "You Lost, Better Luck Next Time!";
+            pm.ResetButton.transform.Find("EndGameText").GetComponentInChildren<Text>().text = "You Lost, Better Luck Next Time!";
         } else {
-            ResetButton.transform.Find("EndGameText").GetComponentInChildren<Text>().text = "It's a Tie!";
+            pm.ResetButton.transform.Find("EndGameText").GetComponentInChildren<Text>().text = "It's a Tie!";
         }
 
-        ResetButton.transform.localScale = new Vector3(1, 1, 1);
+        pm.ResetButton.transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    void Awake () {
+        networkMatch = GetComponent<NetworkMatch> ();
     }
 
     //when the server starts, store Card1 and Card2 in the cards deck. Note that server-only methods require the [Server] attribute immediately preceding them!
     [Server]
     public override void OnStartServer()
     {
+        netIDGuid = netId.ToString ().ToGuid ();
+        networkMatch.matchId = netIDGuid;
+
         cards.AddRange(DefenceCards);
         cards.AddRange(AssetCards);
         cards.AddRange(AttackCards);
@@ -153,7 +205,7 @@ public class PlayerManager : NetworkBehaviour
         //(5x) Spawn a random card from the cards deck on the Server, assigning authority over it to the Client that requested the Command. Then run RpcShowCard() and indicate that this card was "Dealt"
         for (int i = 0; i < n; i++)
         {
-            GameObject card = Instantiate(cards[Random.Range(0, cards.Count)], new Vector2(0, 0), Quaternion.identity);
+            GameObject card = Instantiate(cards[UnityEngine.Random.Range(0, cards.Count)], new Vector2(0, 0), Quaternion.identity);
             NetworkServer.Spawn(card, connectionToClient);
             RpcShowCard(card, "Dealt", "");
         }
@@ -231,17 +283,19 @@ public class PlayerManager : NetworkBehaviour
     [ClientRpc]
     void RpcShowCard(GameObject card, string type, string playAreaName)
     {
-        // Debug.Log(playAreaName);
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        Debug.Log("RPCShowCard Play area is null:" + (pm.PlayerArea == null));
 
         //if the card has been "Dealt," determine whether this Client has authority over it, and send it either to the PlayerArea or EnemyArea, accordingly. For the latter, flip it so the player can't see the front!
         if (type == "Dealt"){
             if (hasAuthority)
             {
-                card.transform.SetParent(PlayerArea.transform, false);
+                card.transform.SetParent(pm.PlayerArea.transform, false);
             }
             else
             {
-                card.transform.SetParent(EnemyArea.transform, false);
+                card.transform.SetParent(pm.EnemyArea.transform, false);
                 card.GetComponent<CardFlipper>().Flip();
             }
         }
@@ -250,21 +304,21 @@ public class PlayerManager : NetworkBehaviour
             if (hasAuthority) {
                 Transform child = null;
                 if (playAreaName == "EnemyArea (1)") {
-                    child = EnemyArea1.transform.GetChild(EnemyArea1.transform.childCount - 1);
+                    child = pm.EnemyArea1.transform.GetChild(pm.EnemyArea1.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (2)") {
-                    child = EnemyArea2.transform.GetChild(EnemyArea2.transform.childCount - 1);
+                    child = pm.EnemyArea2.transform.GetChild(pm.EnemyArea2.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (3)") {
-                    child = EnemyArea3.transform.GetChild(EnemyArea3.transform.childCount - 1);
+                    child = pm.EnemyArea3.transform.GetChild(pm.EnemyArea3.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (4)") {
-                    child = EnemyArea4.transform.GetChild(EnemyArea4.transform.childCount - 1);
+                    child = pm.EnemyArea4.transform.GetChild(pm.EnemyArea4.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (5)") {
-                    child = EnemyArea5.transform.GetChild(EnemyArea5.transform.childCount - 1);
+                    child = pm.EnemyArea5.transform.GetChild(pm.EnemyArea5.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (6)") {
-                    child = EnemyArea6.transform.GetChild(EnemyArea6.transform.childCount - 1);
+                    child = pm.EnemyArea6.transform.GetChild(pm.EnemyArea6.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (7)") {
-                    child = EnemyArea7.transform.GetChild(EnemyArea7.transform.childCount - 1);
+                    child = pm.EnemyArea7.transform.GetChild(pm.EnemyArea7.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (8)") {
-                    child = EnemyArea8.transform.GetChild(EnemyArea8.transform.childCount - 1);
+                    child = pm.EnemyArea8.transform.GetChild(pm.EnemyArea8.transform.childCount - 1);
                 }
 
                 if (child != null) {
@@ -279,21 +333,21 @@ public class PlayerManager : NetworkBehaviour
             } else {
                 Transform child = null;
                 if (playAreaName == "EnemyArea (1)") {
-                    child = SpaceArea1.transform.GetChild(SpaceArea1.transform.childCount - 1);
+                    child = pm.SpaceArea1.transform.GetChild(pm.SpaceArea1.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (2)") {
-                    child = SpaceArea2.transform.GetChild(SpaceArea2.transform.childCount - 1);
+                    child = pm.SpaceArea2.transform.GetChild(pm.SpaceArea2.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (3)") {
-                    child = SpaceArea3.transform.GetChild(SpaceArea3.transform.childCount - 1);
+                    child = pm.SpaceArea3.transform.GetChild(pm.SpaceArea3.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (4)") {
-                    child = SpaceArea4.transform.GetChild(SpaceArea4.transform.childCount - 1);
+                    child = pm.SpaceArea4.transform.GetChild(pm.SpaceArea4.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (5)") {
-                    child = SpaceArea5.transform.GetChild(SpaceArea5.transform.childCount - 1);
+                    child = pm.SpaceArea5.transform.GetChild(pm.SpaceArea5.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (6)") {
-                    child = SpaceArea6.transform.GetChild(SpaceArea6.transform.childCount - 1);
+                    child = pm.SpaceArea6.transform.GetChild(pm.SpaceArea6.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (7)") {
-                    child = SpaceArea7.transform.GetChild(SpaceArea7.transform.childCount - 1);
+                    child = pm.SpaceArea7.transform.GetChild(pm.SpaceArea7.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (8)") {
-                    child = SpaceArea8.transform.GetChild(SpaceArea8.transform.childCount - 1);
+                    child = pm.SpaceArea8.transform.GetChild(pm.SpaceArea8.transform.childCount - 1);
                 }
                 if (child != null) {
                     // Remove asset or defence as well as the used up attack card
@@ -310,39 +364,39 @@ public class PlayerManager : NetworkBehaviour
         {
             if (hasAuthority) {
                 if (playAreaName == "SpaceArea (1)") {
-                    card.transform.SetParent(SpaceArea1.transform, false);
+                    card.transform.SetParent(pm.SpaceArea1.transform, false);
                 } else if (playAreaName == "SpaceArea (2)") {
-                    card.transform.SetParent(SpaceArea2.transform, false);
+                    card.transform.SetParent(pm.SpaceArea2.transform, false);
                 } else if (playAreaName == "SpaceArea (3)") {
-                    card.transform.SetParent(SpaceArea3.transform, false);
+                    card.transform.SetParent(pm.SpaceArea3.transform, false);
                 } else if (playAreaName == "SpaceArea (4)") {
-                    card.transform.SetParent(SpaceArea4.transform, false);
+                    card.transform.SetParent(pm.SpaceArea4.transform, false);
                 } else if (playAreaName == "SpaceArea (5)") {
-                    card.transform.SetParent(SpaceArea5.transform, false);
+                    card.transform.SetParent(pm.SpaceArea5.transform, false);
                 } else if (playAreaName == "SpaceArea (6)") {
-                    card.transform.SetParent(SpaceArea6.transform, false);
+                    card.transform.SetParent(pm.SpaceArea6.transform, false);
                 } else if (playAreaName == "SpaceArea (7)") {
-                    card.transform.SetParent(SpaceArea7.transform, false);
+                    card.transform.SetParent(pm.SpaceArea7.transform, false);
                 } else if (playAreaName == "SpaceArea (8)") {
-                    card.transform.SetParent(SpaceArea8.transform, false);
+                    card.transform.SetParent(pm.SpaceArea8.transform, false);
                 }
             } else {
                 if (playAreaName == "SpaceArea (1)") {
-                    card.transform.SetParent(EnemyArea1.transform, false);
+                    card.transform.SetParent(pm.EnemyArea1.transform, false);
                 } else if (playAreaName == "SpaceArea (2)") {
-                    card.transform.SetParent(EnemyArea2.transform, false);
+                    card.transform.SetParent(pm.EnemyArea2.transform, false);
                 } else if (playAreaName == "SpaceArea (3)") {
-                    card.transform.SetParent(EnemyArea3.transform, false);
+                    card.transform.SetParent(pm.EnemyArea3.transform, false);
                 } else if (playAreaName == "SpaceArea (4)") {
-                    card.transform.SetParent(EnemyArea4.transform, false);
+                    card.transform.SetParent(pm.EnemyArea4.transform, false);
                 } else if (playAreaName == "SpaceArea (5)") {
-                    card.transform.SetParent(EnemyArea5.transform, false);
+                    card.transform.SetParent(pm.EnemyArea5.transform, false);
                 } else if (playAreaName == "SpaceArea (6)") {
-                    card.transform.SetParent(EnemyArea6.transform, false);
+                    card.transform.SetParent(pm.EnemyArea6.transform, false);
                 } else if (playAreaName == "SpaceArea (7)") {
-                    card.transform.SetParent(EnemyArea7.transform, false);
+                    card.transform.SetParent(pm.EnemyArea7.transform, false);
                 } else if (playAreaName == "SpaceArea (8)") {
-                    card.transform.SetParent(EnemyArea8.transform, false);
+                    card.transform.SetParent(pm.EnemyArea8.transform, false);
                 }
             }
 
@@ -357,18 +411,19 @@ public class PlayerManager : NetworkBehaviour
     [ClientRpc]
     public void RpcInitiateGame()
     {
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+
         Debug.Log("Jeffrey: Game Initiated");
 
-        if(ResetButton != null) {
+        if(pm.ResetButton != null) {
             Debug.Log("Client Start Reset Button not Null");
-            ResetButton.transform.localScale = new Vector3(0, 0, 0);
+            pm.ResetButton.transform.localScale = new Vector3(0, 0, 0);
         } else {
             Debug.Log("Client Start Reset Button is Null");
         }
         
         // Deal 5 cards to each client/player
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
         pm.CmdDealCards(5);
     }
 
@@ -389,15 +444,13 @@ public class PlayerManager : NetworkBehaviour
 
         // calculate score
         if (pm.isPlayerTurn) {
-            Debug.Log("Number of assets: " + AssetArea.transform.childCount);
-            foreach(var safeArea in safeAreaList)
+            foreach(var safeArea in pm.safeAreaList)
             {
                 pm.playerScore += (safeArea.transform.childCount > 0) ? 1:0;
             }
             pm.PlayerScoreText.text = pm.playerScore.ToString();
         } else {
-            Debug.Log("Number of enemy assets: " + AssetArea.transform.childCount);
-            foreach(var enemyArea in enemyAreaList)
+            foreach(var enemyArea in pm.enemyAreaList)
             {
                 pm.enemyScore += (enemyArea.transform.childCount > 0) ? 1:0;
             }
@@ -526,5 +579,182 @@ public class PlayerManager : NetworkBehaviour
         } else {
             Debug.Log("Game manager in initiate game is null");
         }
+    }
+
+    /* 
+        HOST MATCH
+    */
+
+    public void HostGame (bool publicMatch) {
+        string matchID = MatchMaker.GetRandomMatchID ();
+        CmdHostGame (matchID, publicMatch);
+    }
+
+    [Command]
+    void CmdHostGame (string _matchID, bool publicMatch) {
+        matchID = _matchID;
+        if (MatchMaker.instance.HostGame (_matchID, this, publicMatch, out playerIndex)) {
+            Debug.Log ($"<color=green>Game hosted successfully</color>");
+            networkMatch.matchId = _matchID.ToGuid ();
+            TargetHostGame (true, _matchID, playerIndex);
+        } else {
+            Debug.Log ($"<color=red>Game hosted failed</color>");
+            TargetHostGame (false, _matchID, playerIndex);
+        }
+    }
+
+    [TargetRpc]
+    void TargetHostGame (bool success, string _matchID, int _playerIndex) {
+        playerIndex = _playerIndex;
+        matchID = _matchID;
+        Debug.Log ($"MatchID: {matchID} == {_matchID}");
+        UILobby.instance.HostSuccess (success, _matchID);
+    }
+
+    /* 
+        JOIN MATCH
+    */
+
+    public void JoinGame (string _inputID) {
+        CmdJoinGame (_inputID);
+    }
+
+    [Command]
+    void CmdJoinGame (string _matchID) {
+        matchID = _matchID;
+        if (MatchMaker.instance.JoinGame (_matchID, this, out playerIndex)) {
+            Debug.Log ($"<color=green>Game Joined successfully</color>");
+            networkMatch.matchId = _matchID.ToGuid ();
+            TargetJoinGame (true, _matchID, playerIndex);
+
+            //Host
+            if (isServer && playerLobbyUI != null) {
+                playerLobbyUI.SetActive (true);
+            }
+        } else {
+            Debug.Log ($"<color=red>Game Joined failed</color>");
+            TargetJoinGame (false, _matchID, playerIndex);
+        }
+    }
+
+    [TargetRpc]
+    void TargetJoinGame (bool success, string _matchID, int _playerIndex) {
+        playerIndex = _playerIndex;
+        matchID = _matchID;
+        Debug.Log ($"MatchID: {matchID} == {_matchID}");
+        UILobby.instance.JoinSuccess (success, _matchID);
+    }
+
+    /* 
+        DISCONNECT
+    */
+
+    public void DisconnectGame () {
+        CmdDisconnectGame ();
+    }
+
+    [Command]
+    void CmdDisconnectGame () {
+        ServerDisconnect ();
+    }
+
+    void ServerDisconnect () {
+        MatchMaker.instance.PlayerDisconnected (this, matchID);
+        RpcDisconnectGame ();
+        networkMatch.matchId = netIDGuid;
+    }
+
+    [ClientRpc]
+    void RpcDisconnectGame () {
+        ClientDisconnect ();
+    }
+
+    void ClientDisconnect () {
+        if (playerLobbyUI != null) {
+            if (!isServer) {
+                Destroy (playerLobbyUI);
+            } else {
+                playerLobbyUI.SetActive (false);
+            }
+        }
+    }
+
+    /* 
+        SEARCH MATCH
+    */
+
+    public void SearchGame () {
+        // CmdSearchGame ();
+    }
+
+    // [Command]
+    // void CmdSearchGame () {
+    //     if (MatchMaker.instance.SearchGame (this, out playerIndex, out matchID)) {
+    //         Debug.Log ($"<color=green>Game Found Successfully</color>");
+    //         networkMatch.matchId = matchID.ToGuid ();
+    //         TargetSearchGame (true, matchID, playerIndex);
+
+    //         //Host
+    //         if (isServer && playerLobbyUI != null) {
+    //             playerLobbyUI.SetActive (true);
+    //         }
+    //     } else {
+    //         Debug.Log ($"<color=red>Game Search Failed</color>");
+    //         TargetSearchGame (false, matchID, playerIndex);
+    //     }
+    // }
+
+    // [TargetRpc]
+    // void TargetSearchGame (bool success, string _matchID, int _playerIndex) {
+    //     playerIndex = _playerIndex;
+    //     matchID = _matchID;
+    //     Debug.Log ($"MatchID: {matchID} == {_matchID} | {success}");
+    //     UILobby.instance.SearchGameSuccess (success, _matchID);
+    // }
+
+    /* 
+        MATCH PLAYERS
+    */
+
+    [Server]
+    public void PlayerCountUpdated (int playerCount) {
+        TargetPlayerCountUpdated (playerCount);
+    }
+
+    [TargetRpc]
+    void TargetPlayerCountUpdated (int playerCount) {
+        if (playerCount > 1) {
+            UILobby.instance.SetStartButtonActive(true);
+        } else {
+            UILobby.instance.SetStartButtonActive(false);
+        }
+    }
+
+    /* 
+        BEGIN MATCH
+    */
+
+    public void BeginGame () {
+        CmdBeginGame ();
+    }
+
+    [Command]
+    void CmdBeginGame () {
+        MatchMaker.instance.BeginGame (matchID);
+        Debug.Log ($"<color=red>Game Beginning</color>");
+    }
+
+    public void StartGame () { //Server
+        TargetBeginGame ();
+    }
+
+    [TargetRpc]
+    void TargetBeginGame () {
+        Debug.Log ($"MatchID: {matchID} | Beginning");
+
+        //Additively load game scene
+        SceneManager.LoadScene(0, LoadSceneMode.Additive);
+    }
+
     }
 }
