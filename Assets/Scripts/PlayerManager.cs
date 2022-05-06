@@ -18,7 +18,6 @@ namespace MirrorBasics {
     public static PlayerManager localPlayer;
     [SyncVar] public string matchID;
     [SyncVar] public int playerIndex;
-
     NetworkMatch networkMatch;
 
     [SyncVar] public Match currentMatch;
@@ -99,8 +98,8 @@ namespace MirrorBasics {
         pm.ResetButton.transform.localScale = new Vector3(0, 0, 0);
 
         setAreas();
-
-        if (isServer) {
+        Debug.Log("Player Index: " + playerIndex);
+        if (playerIndex == 0) {
             pm.isPlayerTurn = true;
         }
 
@@ -499,7 +498,7 @@ namespace MirrorBasics {
         resetPlayerScoresAndTurn();
 
         // Set active turn and tell Game Manager to initiate game
-        if (isServer) {
+        if (playerIndex == 0) {
             pm.isPlayerTurn = true;
         } else {
             pm.isPlayerTurn = false;
@@ -723,7 +722,7 @@ namespace MirrorBasics {
         Debug.Log ($"MatchID: {matchID} | Beginning");
 
         //Additively load game scene
-        SceneManager.LoadScene(0, LoadSceneMode.Additive);
+        SceneManager.LoadScene(1, LoadSceneMode.Additive);
     }
 
     }
