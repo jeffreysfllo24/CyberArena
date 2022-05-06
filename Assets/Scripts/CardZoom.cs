@@ -34,8 +34,8 @@ namespace MirrorBasics {
 
             //if the client hasAuthority, create a new version of the card with the appropriate sprite
         
-            int width = 120;
-            int height = 177;
+            int width = 0;
+            int height = 0;
             int x = (Screen.width / 2) + (width / 2);
             int y = (Screen.height / 2) + (height / 2);
 
