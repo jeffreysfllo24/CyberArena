@@ -16,15 +16,13 @@ public class PlayerManager : NetworkBehaviour
     public List<GameObject> AttackCards;
 
     // Board Locations
-    public GameObject SpaceArea1; public GameObject SpaceArea2; public GameObject SpaceArea3; public GameObject SpaceArea4; public GameObject SpaceArea5; public GameObject SpaceArea6; public GameObject SpaceArea7; public GameObject SpaceArea8;
+    public GameObject SpaceArea1; public GameObject SpaceArea2; public GameObject SpaceArea3; public GameObject SpaceArea4; public GameObject SpaceArea5; public GameObject SpaceArea6;
 
-    public GameObject EnemyArea1; public GameObject EnemyArea2; public GameObject EnemyArea3; public GameObject EnemyArea4; public GameObject EnemyArea5; public GameObject EnemyArea6; public GameObject EnemyArea7; public GameObject EnemyArea8;
-    public GameObject PlayerArea;
-    public GameObject EnemyArea;
-    public GameObject AssetArea;
-    public GameObject DefenceArea;
-    public GameObject EnemyAssetArea;
-    public GameObject EnemyDefenceArea;
+    public GameObject EnemyArea1; public GameObject EnemyArea2; public GameObject EnemyArea3; public GameObject EnemyArea4; public GameObject EnemyArea5; public GameObject EnemyArea6;
+    public GameObject PlayerHandArea;
+    public GameObject EnemyHandArea;
+    public GameObject PlayerCardArea;
+    public GameObject EnemyCardArea;
 
     private int playerScore = 0;
     private int enemyScore = 0;
@@ -48,12 +46,10 @@ public class PlayerManager : NetworkBehaviour
 
         base.OnStartClient();
 
-        PlayerArea = GameObject.Find("PlayerArea");
-        EnemyArea = GameObject.Find("EnemyArea");
-        AssetArea = GameObject.Find("AssetArea");
-        DefenceArea = GameObject.Find("DefenceArea");
-        EnemyAssetArea = GameObject.Find("EnemyAssetArea");
-        EnemyDefenceArea = GameObject.Find("EnemyDefenceArea");
+        PlayerHandArea = GameObject.Find("PlayerHandArea");
+        EnemyHandArea = GameObject.Find("EnemyHandArea");
+        PlayerCardArea = GameObject.Find("PlayerCardArea");
+        EnemyCardArea = GameObject.Find("EnemyCardArea");
 
         GameObject Hud = GameObject.Find("HUD");
         PlayerScoreText = Hud.transform.Find("PlayerScore").GetComponent<TextMeshProUGUI>();
@@ -76,10 +72,8 @@ public class PlayerManager : NetworkBehaviour
     void setAreas() {
         SpaceArea1 = GameObject.Find("SpaceArea (1)");
         safeAreaList.Add(SpaceArea1);
-
         SpaceArea2 = GameObject.Find("SpaceArea (2)");
         safeAreaList.Add(SpaceArea2);
-
         SpaceArea3 = GameObject.Find("SpaceArea (3)");
         safeAreaList.Add(SpaceArea3);
         SpaceArea4 = GameObject.Find("SpaceArea (4)");
@@ -88,10 +82,6 @@ public class PlayerManager : NetworkBehaviour
         safeAreaList.Add(SpaceArea5);
         SpaceArea6 = GameObject.Find("SpaceArea (6)");
         safeAreaList.Add(SpaceArea6);
-        SpaceArea7 = GameObject.Find("SpaceArea (7)");
-        safeAreaList.Add(SpaceArea7);
-        SpaceArea8 = GameObject.Find("SpaceArea (8)");
-        safeAreaList.Add(SpaceArea8);
 
         EnemyArea1 = GameObject.Find("EnemyArea (1)");
         enemyAreaList.Add(EnemyArea1);
@@ -105,17 +95,13 @@ public class PlayerManager : NetworkBehaviour
         enemyAreaList.Add(EnemyArea5);
         EnemyArea6 = GameObject.Find("EnemyArea (6)");
         enemyAreaList.Add(EnemyArea6);
-        EnemyArea7 = GameObject.Find("EnemyArea (7)");
-        enemyAreaList.Add(EnemyArea7);
-        EnemyArea8 = GameObject.Find("EnemyArea (8)");
-        enemyAreaList.Add(EnemyArea8);
     }
 
     void updateTurnStatus(bool isPlayerTurnVal) {
         if (isPlayerTurnVal) {
-            GameObject.Find("Button").GetComponentInChildren<Text>().text = "End Turn";
+            GameObject.Find("Button").GetComponentInChildren<TextMeshProUGUI>().text = "End Turn";
         } else {
-            GameObject.Find("Button").GetComponentInChildren<Text>().text = "Enemy Turn";
+            GameObject.Find("Button").GetComponentInChildren<TextMeshProUGUI>().text = "Enemy Turn";
         }
     }
 
@@ -233,15 +219,15 @@ public class PlayerManager : NetworkBehaviour
     {
         // Debug.Log(playAreaName);
 
-        //if the card has been "Dealt," determine whether this Client has authority over it, and send it either to the PlayerArea or EnemyArea, accordingly. For the latter, flip it so the player can't see the front!
+        //if the card has been "Dealt," determine whether this Client has authority over it, and send it either to the PlayerHandArea or EnemyArea, accordingly. For the latter, flip it so the player can't see the front!
         if (type == "Dealt"){
             if (hasAuthority)
             {
-                card.transform.SetParent(PlayerArea.transform, false);
+                card.transform.SetParent(PlayerHandArea.transform, false);
             }
             else
             {
-                card.transform.SetParent(EnemyArea.transform, false);
+                card.transform.SetParent(EnemyHandArea.transform, false);
                 card.GetComponent<CardFlipper>().Flip();
             }
         }
@@ -261,10 +247,6 @@ public class PlayerManager : NetworkBehaviour
                     child = EnemyArea5.transform.GetChild(EnemyArea5.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (6)") {
                     child = EnemyArea6.transform.GetChild(EnemyArea6.transform.childCount - 1);
-                } else if (playAreaName == "EnemyArea (7)") {
-                    child = EnemyArea7.transform.GetChild(EnemyArea7.transform.childCount - 1);
-                } else if (playAreaName == "EnemyArea (8)") {
-                    child = EnemyArea8.transform.GetChild(EnemyArea8.transform.childCount - 1);
                 }
 
                 if (child != null) {
@@ -290,10 +272,6 @@ public class PlayerManager : NetworkBehaviour
                     child = SpaceArea5.transform.GetChild(SpaceArea5.transform.childCount - 1);
                 } else if (playAreaName == "EnemyArea (6)") {
                     child = SpaceArea6.transform.GetChild(SpaceArea6.transform.childCount - 1);
-                } else if (playAreaName == "EnemyArea (7)") {
-                    child = SpaceArea7.transform.GetChild(SpaceArea7.transform.childCount - 1);
-                } else if (playAreaName == "EnemyArea (8)") {
-                    child = SpaceArea8.transform.GetChild(SpaceArea8.transform.childCount - 1);
                 }
                 if (child != null) {
                     // Remove asset or defence as well as the used up attack card
@@ -321,10 +299,6 @@ public class PlayerManager : NetworkBehaviour
                     card.transform.SetParent(SpaceArea5.transform, false);
                 } else if (playAreaName == "SpaceArea (6)") {
                     card.transform.SetParent(SpaceArea6.transform, false);
-                } else if (playAreaName == "SpaceArea (7)") {
-                    card.transform.SetParent(SpaceArea7.transform, false);
-                } else if (playAreaName == "SpaceArea (8)") {
-                    card.transform.SetParent(SpaceArea8.transform, false);
                 }
             } else {
                 if (playAreaName == "SpaceArea (1)") {
@@ -339,10 +313,6 @@ public class PlayerManager : NetworkBehaviour
                     card.transform.SetParent(EnemyArea5.transform, false);
                 } else if (playAreaName == "SpaceArea (6)") {
                     card.transform.SetParent(EnemyArea6.transform, false);
-                } else if (playAreaName == "SpaceArea (7)") {
-                    card.transform.SetParent(EnemyArea7.transform, false);
-                } else if (playAreaName == "SpaceArea (8)") {
-                    card.transform.SetParent(EnemyArea8.transform, false);
                 }
             }
 
@@ -389,14 +359,12 @@ public class PlayerManager : NetworkBehaviour
 
         // calculate score
         if (pm.isPlayerTurn) {
-            Debug.Log("Number of assets: " + AssetArea.transform.childCount);
             foreach(var safeArea in safeAreaList)
             {
                 pm.playerScore += (safeArea.transform.childCount > 0) ? 1:0;
             }
             pm.PlayerScoreText.text = pm.playerScore.ToString();
         } else {
-            Debug.Log("Number of enemy assets: " + AssetArea.transform.childCount);
             foreach(var enemyArea in enemyAreaList)
             {
                 pm.enemyScore += (enemyArea.transform.childCount > 0) ? 1:0;
@@ -464,11 +432,11 @@ public class PlayerManager : NetworkBehaviour
         deleteListChildren(pm.safeAreaList);
         deleteListChildren(pm.enemyAreaList);
         
-        foreach (Transform child in pm.PlayerArea.transform) {
+        foreach (Transform child in pm.PlayerHandArea.transform) {
             Destroy(child.gameObject);
         }
 
-        foreach (Transform child in pm.EnemyArea.transform) {
+        foreach (Transform child in pm.EnemyHandArea.transform) {
             Destroy(child.gameObject);
         }
 
