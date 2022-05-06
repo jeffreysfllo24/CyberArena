@@ -23,6 +23,7 @@ namespace MirrorBasics {
     [SyncVar] public Match currentMatch;
 
     [SerializeField] GameObject playerLobbyUI;
+    AsyncOperation asyncLoadLevel;
 
     Guid netIDGuid;
 
@@ -498,7 +499,7 @@ namespace MirrorBasics {
         resetPlayerScoresAndTurn();
 
         // Set active turn and tell Game Manager to initiate game
-        if (playerIndex == 0) {
+        if (pm.playerIndex == 0) {
             pm.isPlayerTurn = true;
         } else {
             pm.isPlayerTurn = false;
