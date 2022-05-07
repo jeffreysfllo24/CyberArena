@@ -6,9 +6,12 @@ using UnityEngine;
 namespace Mirror
 {
     [DisallowMultipleComponent]
+    [HelpURL("https://mirror-networking.gitbook.io/docs/guides/interest-management")]
     public abstract class InterestManagement : MonoBehaviour
     {
         // Awake configures InterestManagement in NetworkServer/Client
+        // Do NOT check for active server or client here.
+        // Awake must always set the static aoi references.
         void Awake()
         {
             if (NetworkServer.aoi == null)
@@ -23,6 +26,9 @@ namespace Mirror
             }
             else Debug.LogError($"Only one InterestManagement component allowed. {NetworkClient.aoi.GetType()} has been set up already.");
         }
+
+        [ServerCallback]
+        public virtual void Reset() {}
 
         // Callback used by the visibility system to determine if an observer
         // (player) can see the NetworkIdentity. If this function returns true,
@@ -56,6 +62,7 @@ namespace Mirror
         // scene changes and so on.
         //
         // IMPORTANT: check if NetworkServer.active when using Update()!
+        [ServerCallback]
         protected void RebuildAll()
         {
             foreach (NetworkIdentity identity in NetworkServer.spawned.Values)
@@ -72,6 +79,7 @@ namespace Mirror
         // object. This is only called on local clients on a host.
         // => need the function in here and virtual so people can overwrite!
         // => not everyone wants to hide renderers!
+        [ServerCallback]
         public virtual void SetHostVisibility(NetworkIdentity identity, bool visible)
         {
             foreach (Renderer rend in identity.GetComponentsInChildren<Renderer>())
@@ -80,10 +88,12 @@ namespace Mirror
 
         /// <summary>Called on the server when a new networked object is spawned.</summary>
         // (useful for 'only rebuild if changed' interest management algorithms)
+        [ServerCallback]
         public virtual void OnSpawned(NetworkIdentity identity) {}
 
         /// <summary>Called on the server when a networked object is destroyed.</summary>
         // (useful for 'only rebuild if changed' interest management algorithms)
+        [ServerCallback]
         public virtual void OnDestroyed(NetworkIdentity identity) {}
     }
 }

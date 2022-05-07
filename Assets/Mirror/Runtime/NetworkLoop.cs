@@ -40,7 +40,7 @@ using UnityEngine.Experimental.PlayerLoop;
 
 namespace Mirror
 {
-    internal static class NetworkLoop
+    public static class NetworkLoop
     {
         // helper enum to add loop to begin/end of subSystemList
         internal enum AddMode { Beginning, End }
@@ -48,6 +48,14 @@ namespace Mirror
         // callbacks in case someone needs to use early/lateupdate too.
         public static Action OnEarlyUpdate;
         public static Action OnLateUpdate;
+
+        // RuntimeInitializeOnLoadMethod -> fast playmode without domain reload
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        static void ResetStatics()
+        {
+            OnEarlyUpdate = null;
+            OnLateUpdate = null;
+        }
 
         // helper function to find an update function's index in a player loop
         // type. this is used for testing to guarantee our functions are added
@@ -150,7 +158,7 @@ namespace Mirror
         }
 
         // hook into Unity runtime to actually add our custom functions
-        [RuntimeInitializeOnLoadMethod]
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void RuntimeInitializeOnLoad()
         {
             //Debug.Log("Mirror: adding Network[Early/Late]Update to Unity...");
@@ -181,7 +189,7 @@ namespace Mirror
 
         static void NetworkEarlyUpdate()
         {
-            //Debug.Log("NetworkEarlyUpdate @ " + Time.time);
+            //Debug.Log($"NetworkEarlyUpdate {Time.time}");
             NetworkServer.NetworkEarlyUpdate();
             NetworkClient.NetworkEarlyUpdate();
             // invoke event after mirror has done it's early updating.
@@ -190,7 +198,7 @@ namespace Mirror
 
         static void NetworkLateUpdate()
         {
-            //Debug.Log("NetworkLateUpdate @ " + Time.time);
+            //Debug.Log($"NetworkLateUpdate {Time.time}");
             // invoke event before mirror does its final late updating.
             OnLateUpdate?.Invoke();
             NetworkServer.NetworkLateUpdate();
