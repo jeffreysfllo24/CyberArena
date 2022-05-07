@@ -13,6 +13,7 @@ namespace MirrorBasics {
 
         void Start () {
             Debug.Log("Game Manager Awake!");
+            awakeGameObjects();
         }
 
         public void UpdateTurnsPlayed()
@@ -35,7 +36,7 @@ namespace MirrorBasics {
             }
         }
 
-
+        [Server]
         public void awakeGameObjects() {
             NetworkIdentity networkIdentity = NetworkClient.connection.identity;
             PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
