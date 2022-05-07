@@ -57,6 +57,8 @@ namespace MirrorBasics {
     List<GameObject> enemyAreaList = new List<GameObject>();
     public bool isPlayerTurn = false; // Boolean indiciating whether it is the current players turn
 
+    int id = 0;
+
     public override void OnStartClient()
     {
         Debug.Log("onStartClient Callled");
@@ -99,8 +101,8 @@ namespace MirrorBasics {
         pm.ResetButton.transform.localScale = new Vector3(0, 0, 0);
 
         setAreas();
-        Debug.Log("Player Index: " + playerIndex);
-        if (playerIndex == 0) {
+        Debug.Log("Player ID: " + id);
+        if (pm.id == 0) {
             pm.isPlayerTurn = true;
         }
 
@@ -499,7 +501,7 @@ namespace MirrorBasics {
         resetPlayerScoresAndTurn();
 
         // Set active turn and tell Game Manager to initiate game
-        if (pm.playerIndex == 0) {
+        if (pm.id == 0) {
             pm.isPlayerTurn = true;
         } else {
             pm.isPlayerTurn = false;
@@ -522,9 +524,9 @@ namespace MirrorBasics {
         PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
 
         pm.playerScore = 0;
-        pm.PlayerScoreText.text = "0";
+        pm.PlayerScoreText.text = "Player score: 0";
         pm.enemyScore = 0;
-        pm.EnemyScoreText.text = "0";
+        pm.EnemyScoreText.text = "Opponent score: 0";
 
         pm.TurnCounterText.text = "Turn: 1/10";
     }
@@ -714,14 +716,14 @@ namespace MirrorBasics {
         Debug.Log ($"<color=red>Game Beginning</color>");
     }
 
-    public void StartGame () { //Server
-        TargetBeginGame ();
+    public void StartGame (int id) { //Server
+        TargetBeginGame (id);
     }
 
     [TargetRpc]
-    void TargetBeginGame () {
+    void TargetBeginGame (int playerId) {
         Debug.Log ($"MatchID: {matchID} | Beginning");
-
+        id = playerId;
         //Additively load game scene
         SceneManager.LoadScene(1, LoadSceneMode.Additive);
     }

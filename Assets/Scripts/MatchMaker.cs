@@ -110,8 +110,10 @@ namespace MirrorBasics {
             for (int i = 0; i < matches.Count; i++) {
                 if (matches[i].matchID == _matchID) {
                     matches[i].inMatch = true;
+                    int counter = 0;
                     foreach (var player in matches[i].players) {
-                        player.StartGame ();
+                        player.StartGame (counter);
+                        counter ++;
                     }
                     break;
                 }
