@@ -37,8 +37,10 @@ namespace MirrorBasics {
 
     public GameObject ResetButton;
 
-    //the cards List represents our deck of cards
-    List<GameObject> cards = new List<GameObject>();
+    // the deck List represents our deck of cards
+    List<GameObject> deck = new List<GameObject>();
+    // next card to draw
+    int deckIndex = 0;
 
     List<GameObject> safeAreaList = new List<GameObject>();
 
@@ -151,14 +153,32 @@ namespace MirrorBasics {
         pm.ResetButton.transform.localScale = new Vector3(1, 1, 1);
     }
 
+    // Fisher-Yates implementation
+    // https://gist.github.com/jasonmarziani/7b4769673d0b593457609b392536e9f9
+    private void Shuffle(List<GameObject> list)
+	{
+		for (int i = list.Count-1; i > 0; i--)
+		{
+			int rnd = UnityEngine.Random.Range(0,i);
+
+			GameObject temp = list[i];
+			list[i] = list[rnd];
+			list[rnd] = temp;
+		}
+	}
+
     //when the server starts, store Card1 and Card2 in the cards deck. Note that server-only methods require the [Server] attribute immediately preceding them!
     [Server]
     public override void OnStartServer()
     {
-
-        cards.AddRange(DefenceCards);
-        cards.AddRange(AssetCards);
-        cards.AddRange(AttackCards);
+        for (int i = 0; i < 2; i++) {
+            deck.AddRange(DefenceCards);
+            deck.AddRange(AssetCards);
+            deck.AddRange(AttackCards);
+        }
+        deck.AddRange(AssetCards);
+        Shuffle(deck);
+        // Total of 14 * 2 + 5 = 33 cards
     }
     
     //Commands are methods requested by Clients to run on the Server, and require the [Command] attribute immediately preceding them. CmdDealCards() is called by the DrawCards script attached to the client Button
@@ -168,7 +188,8 @@ namespace MirrorBasics {
         //(5x) Spawn a random card from the cards deck on the Server, assigning authority over it to the Client that requested the Command. Then run RpcShowCard() and indicate that this card was "Dealt"
         for (int i = 0; i < n; i++)
         {
-            GameObject card = Instantiate(cards[UnityEngine.Random.Range(0, cards.Count)], new Vector2(0, 0), Quaternion.identity);
+            GameObject card = Instantiate(deck[deckIndex], new Vector2(0, 0), Quaternion.identity);
+            deckIndex++;
             NetworkServer.Spawn(card, connectionToClient);
             RpcShowCard(card, "Dealt", "");
         }
