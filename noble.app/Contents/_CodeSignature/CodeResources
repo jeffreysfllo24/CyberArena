@@ -6,23 +6,23 @@
 	<dict>
 		<key>Resources/Data/Managed/Assembly-CSharp.dll</key>
 		<data>
-		ifvTFf/cMKn5uUl5mZ0czXntkWA=
+		T1VkTvrRfWy/BUI+RsrXlsM9Elw=
 		</data>
 		<key>Resources/Data/Managed/Mirror.Authenticators.dll</key>
 		<data>
-		+OXmKP0sjYDHt7+Yzhq0zo1WBTg=
+		2UHUuPSQ9obHEu0avHLp0uHNiPU=
 		</data>
 		<key>Resources/Data/Managed/Mirror.Components.dll</key>
 		<data>
-		+SX1bWDIyvpBVsDGBWc+AJpWCZ0=
+		eC8DQYFxk5tpMG40lPBP84finII=
 		</data>
 		<key>Resources/Data/Managed/Mirror.Examples.dll</key>
 		<data>
-		QZh7PZlDAN47rONKxu0QaBI1uaM=
+		vkN9DRXhDudYB3fYNzFE7NF3j3A=
 		</data>
 		<key>Resources/Data/Managed/Mirror.dll</key>
 		<data>
-		X8buABZaArOBeRbNn1UYlkai08Q=
+		XkndjTitBlrFqf7CliLxBH3VQQk=
 		</data>
 		<key>Resources/Data/Managed/Mono.Security.dll</key>
 		<data>
@@ -34,7 +34,7 @@
 		</data>
 		<key>Resources/Data/Managed/SimpleWebTransport.dll</key>
 		<data>
-		Q2/5te4y4T8nd+ERxqha3TuGdNo=
+		GTHWLKYE5xg6gE5xLRNlJHPslSA=
 		</data>
 		<key>Resources/Data/Managed/System.ComponentModel.Composition.dll</key>
 		<data>
@@ -114,7 +114,7 @@
 		</data>
 		<key>Resources/Data/Managed/Telepathy.dll</key>
 		<data>
-		emxe7LTcvl87ZnV6C3JrMyBwuuM=
+		U5Ennqaq5wJYfxy02B143y0BqZE=
 		</data>
 		<key>Resources/Data/Managed/Unity.2D.Animation.Runtime.dll</key>
 		<data>
@@ -446,7 +446,7 @@
 		</data>
 		<key>Resources/Data/Managed/kcp2k.dll</key>
 		<data>
-		vjqYXAMDvLcwbuzOi1FJlzDYpbc=
+		PXlVcjRcri2z2wXmcuD02qcJAQc=
 		</data>
 		<key>Resources/Data/Managed/mscorlib.dll</key>
 		<data>
@@ -458,7 +458,7 @@
 		</data>
 		<key>Resources/Data/Managed/where-allocations.dll</key>
 		<data>
-		DFP/x28KXKElBt30cXmakZWrmkE=
+		oJLVedpjA67fybIytqmzzqOf0iU=
 		</data>
 		<key>Resources/Data/Resources/unity_builtin_extra</key>
 		<data>
@@ -482,7 +482,7 @@
 		</data>
 		<key>Resources/Data/globalgamemanagers</key>
 		<data>
-		34xgFBZZYefnCp1xllrMSgCgrxw=
+		XeM9YQXt+J/gP+2LmK9eyORI0K4=
 		</data>
 		<key>Resources/Data/globalgamemanagers.assets</key>
 		<data>
@@ -510,7 +510,7 @@
 		</data>
 		<key>Resources/Data/sharedassets0.assets</key>
 		<data>
-		e90+xk8GTSBi/33esptEdgDGrgg=
+		0QjzeJKKoXWT3BegBB7K3/6zcJc=
 		</data>
 		<key>Resources/Data/sharedassets0.assets.resS</key>
 		<data>
@@ -518,7 +518,7 @@
 		</data>
 		<key>Resources/Data/sharedassets1.assets</key>
 		<data>
-		nHRbMZ4jW56vCOGQtBqy1/+QYzE=
+		n/O/9hDhgwqJqq9oGTrhSr2IwMw=
 		</data>
 		<key>Resources/Data/sharedassets1.assets.resS</key>
 		<data>
@@ -709,44 +709,44 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			rzHTwsUnBNVQxPXyuU81hZnaotQ=
+			/0bL6vl2Na2rsQbNQeSALpUaRSA=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"af31d3c2c52704d550c4f5f2b94f358599daa2d4" or cdhash H"d4e5c82dddbbe29b096716580ad460a8a6a16aeb"</string>
+			<string>cdhash H"ff46cbeaf97635adabb106cd41e4802e951a4520" or cdhash H"6248f6983becf4fdc385b20e203be4babf3a856b"</string>
 		</dict>
 		<key>Resources/Data/Managed/Assembly-CSharp.dll</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			OuEYcEeSWJr9KDzT+k3aSZhXMyjAzoV0gbqnLvnpuOA=
+			gSv54qCx8+b5Jg7Xl7VSR68cBiQdkrDnXainmLqzbGs=
 			</data>
 		</dict>
 		<key>Resources/Data/Managed/Mirror.Authenticators.dll</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			mL85rqTYfVsIeku5OQ06kwrsUP/RZ1Vq8X8KbT9QOE8=
+			H2EIZXVYudEldVX8RjolAU0IjzwNmq3PJhzZpXIkbww=
 			</data>
 		</dict>
 		<key>Resources/Data/Managed/Mirror.Components.dll</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			y3BqB+o0xxbcOW59tmKYKJHvTY3xy3IENYpINuoVawY=
+			yRD8ZNYxaenL1d0ArhdWToIREP2bJZ4n8RzO/YsLz2A=
 			</data>
 		</dict>
 		<key>Resources/Data/Managed/Mirror.Examples.dll</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			vh1oZdRWznyo8a2Xa8M+pm8TtQdJ5GkIfpV6rwN/dmA=
+			gHX4dvcz48Y8MS3BHSqsgpHLcCKJEOWNCa/t5TxqDUY=
 			</data>
 		</dict>
 		<key>Resources/Data/Managed/Mirror.dll</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			5aBm5qfRjrbBJNGEw6K6y9jkt1tWUtNUslzrDGyyW0M=
+			Regv7bOpWsy4i32LL8RlQFSKccveQ9pVFJPvGdLS+Fk=
 			</data>
 		</dict>
 		<key>Resources/Data/Managed/Mono.Security.dll</key>
@@ -767,7 +767,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			zpXgaT1Gres6m4O9rsMjt5dZIXTbV0ajMI75fdP1wJY=
+			REpfbvhz1c2q5kvS517OH8IqA4ganvxraUz8ZE4eRy4=
 			</data>
 		</dict>
 		<key>Resources/Data/Managed/System.ComponentModel.Composition.dll</key>
@@ -907,7 +907,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			AOMJXSITDguATBj8tQ5mN/rWTCyrLOAVf/1x527kYC0=
+			ImaV5UYIf7TE+1vWgfDMu4HLYn8n2j57IVfN8AA2Mbw=
 			</data>
 		</dict>
 		<key>Resources/Data/Managed/Unity.2D.Animation.Runtime.dll</key>
@@ -1488,7 +1488,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			SxyIfCdtygLqi36VfCqVdUtJFmHoLhEl3w0oq+ObWvU=
+			uLd3p4lczMlLFAo2nuF1nGErUbTwgA/7UEVS8/UZzlY=
 			</data>
 		</dict>
 		<key>Resources/Data/Managed/mscorlib.dll</key>
@@ -1509,7 +1509,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			7tEH8/tISX2qAptJCBnvS7xTxH70QW/cUORpKrkNFyM=
+			p1+g3TGbKX8sMr1rRohKTAw6t3sWJVdpDMsDffznM7M=
 			</data>
 		</dict>
 		<key>Resources/Data/Resources/unity_builtin_extra</key>
@@ -1551,7 +1551,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			HNEoML9F3pnTSdVKhN4cIexN6al3iWZwOJdbYeGPijE=
+			Xrht3aISaAbehemGVLjkyKbYQ4pZhPDr991oQX/SJyM=
 			</data>
 		</dict>
 		<key>Resources/Data/globalgamemanagers.assets</key>
@@ -1600,7 +1600,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			U4xpKgxdqzLXyIbNTCu5lN5Tn8ouOyZY00m8UB0JppA=
+			dNBkx5iooICt9nxXMsF9l1fBmdg1MgNT5oAR3S8Cf2s=
 			</data>
 		</dict>
 		<key>Resources/Data/sharedassets0.assets.resS</key>
@@ -1614,7 +1614,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			8vPP9P+m5E8ImfEsjwo/alqQo3q85WzqL+EYanJ6s2Q=
+			qgUC7DN0lp9TSZnjZehvWqYajfVlcIHTxcAy0o7YqIc=
 			</data>
 		</dict>
 		<key>Resources/Data/sharedassets1.assets.resS</key>
