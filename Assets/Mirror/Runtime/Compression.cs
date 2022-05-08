@@ -279,7 +279,6 @@ namespace Mirror
             }
         }
 
-
         // zigzag encoding https://gist.github.com/mfuerstenau/ba870a29e16536fdbaba
         public static void CompressVarInt(NetworkWriter writer, long i)
         {
@@ -297,7 +296,7 @@ namespace Mirror
             }
 
             byte a1 = reader.ReadByte();
-            if (a0 >= 241 && a0 <= 248)
+            if (a0 <= 248)
             {
                 return 240 + ((a0 - (ulong)241) << 8) + a1;
             }
@@ -344,7 +343,7 @@ namespace Mirror
                 return a1 + (((ulong)a2) << 8) + (((ulong)a3) << 16) + (((ulong)a4) << 24) + (((ulong)a5) << 32) + (((ulong)a6) << 40) + (((ulong)a7) << 48)  + (((ulong)a8) << 56);
             }
 
-            throw new IndexOutOfRangeException("DecompressVarInt failure: " + a0);
+            throw new IndexOutOfRangeException($"DecompressVarInt failure: {a0}");
         }
 
         // zigzag decoding https://gist.github.com/mfuerstenau/ba870a29e16536fdbaba

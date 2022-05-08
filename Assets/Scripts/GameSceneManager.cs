@@ -10,7 +10,6 @@ namespace MirrorBasics {
 
         void Start () {
             Debug.Log("Game Scene Manager Awake!");
-            gameManagerInitiateGame();
         }
 
         [Server]

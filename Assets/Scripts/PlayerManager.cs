@@ -14,18 +14,6 @@ namespace MirrorBasics {
     [RequireComponent (typeof (NetworkMatch))]
     public class PlayerManager : NetworkBehaviour
     {
-    // Lobby Making Variables -----------------------------
-    public static PlayerManager localPlayer;
-    [SyncVar] public string matchID;
-    [SyncVar] public int playerIndex;
-    NetworkMatch networkMatch;
-
-    [SyncVar] public Match currentMatch;
-
-    [SerializeField] GameObject playerLobbyUI;
-    AsyncOperation asyncLoadLevel;
-
-    Guid netIDGuid;
 
     // Cards -----------------------------
     public List<GameObject> DefenceCards;
@@ -49,8 +37,10 @@ namespace MirrorBasics {
 
     public GameObject ResetButton;
 
-    //the cards List represents our deck of cards
-    List<GameObject> cards = new List<GameObject>();
+    // the deck List represents our deck of cards
+    List<GameObject> deck = new List<GameObject>();
+    // next card to draw
+    int deckIndex = 0;
 
     List<GameObject> safeAreaList = new List<GameObject>();
 
@@ -64,29 +54,21 @@ namespace MirrorBasics {
         Debug.Log("onStartClient Callled");
 
         base.OnStartClient();
-
-        if (isLocalPlayer) {
-            localPlayer = this;
-        } else {
-            Debug.Log ($"Spawning other player UI Prefab");
-            playerLobbyUI = UILobby.instance.SpawnPlayerUIPrefab (this);
-        }
+        NewPlayerConnected();
     }
 
     public override void OnStopClient () {
         Debug.Log ($"Client Stopped");
-        ClientDisconnect ();
     }
 
     public override void OnStopServer () {
         Debug.Log ($"Client Stopped on Server");
-        ServerDisconnect ();
     }
 
     [ClientRpc]
     public void RpcPopulateGameObjects() {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         pm.PlayerHandArea = GameObject.Find("PlayerHandArea");
         pm.EnemyHandArea = GameObject.Find("EnemyHandArea");
@@ -102,7 +84,7 @@ namespace MirrorBasics {
 
         setAreas();
         Debug.Log("Player ID: " + id);
-        if (pm.id == 0) {
+        if (isServer) {
             pm.isPlayerTurn = true;
         }
 
@@ -111,8 +93,8 @@ namespace MirrorBasics {
     }
 
     void setAreas() {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         pm.SpaceArea1 = GameObject.Find("SpaceArea (1)");
         pm.safeAreaList.Add(pm.SpaceArea1);
@@ -152,8 +134,8 @@ namespace MirrorBasics {
     }
 
     void RpcUpdateEndGameText(int playerScore, int enemyScore) {     
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         if (pm.ResetButton == null){
             Debug.Log("Reset Button Null in update endgame text");
@@ -171,20 +153,32 @@ namespace MirrorBasics {
         pm.ResetButton.transform.localScale = new Vector3(1, 1, 1);
     }
 
-    void Awake () {
-        networkMatch = GetComponent<NetworkMatch> ();
-    }
+    // Fisher-Yates implementation
+    // https://gist.github.com/jasonmarziani/7b4769673d0b593457609b392536e9f9
+    private void Shuffle(List<GameObject> list)
+	{
+		for (int i = list.Count-1; i > 0; i--)
+		{
+			int rnd = UnityEngine.Random.Range(0,i);
+
+			GameObject temp = list[i];
+			list[i] = list[rnd];
+			list[rnd] = temp;
+		}
+	}
 
     //when the server starts, store Card1 and Card2 in the cards deck. Note that server-only methods require the [Server] attribute immediately preceding them!
     [Server]
     public override void OnStartServer()
     {
-        netIDGuid = netId.ToString ().ToGuid ();
-        networkMatch.matchId = netIDGuid;
-
-        cards.AddRange(DefenceCards);
-        cards.AddRange(AssetCards);
-        cards.AddRange(AttackCards);
+        for (int i = 0; i < 2; i++) {
+            deck.AddRange(DefenceCards);
+            deck.AddRange(AssetCards);
+            deck.AddRange(AttackCards);
+        }
+        deck.AddRange(AssetCards);
+        Shuffle(deck);
+        // Total of 14 * 2 + 5 = 33 cards
     }
     
     //Commands are methods requested by Clients to run on the Server, and require the [Command] attribute immediately preceding them. CmdDealCards() is called by the DrawCards script attached to the client Button
@@ -194,7 +188,8 @@ namespace MirrorBasics {
         //(5x) Spawn a random card from the cards deck on the Server, assigning authority over it to the Client that requested the Command. Then run RpcShowCard() and indicate that this card was "Dealt"
         for (int i = 0; i < n; i++)
         {
-            GameObject card = Instantiate(cards[UnityEngine.Random.Range(0, cards.Count)], new Vector2(0, 0), Quaternion.identity);
+            GameObject card = Instantiate(deck[deckIndex], new Vector2(0, 0), Quaternion.identity);
+            deckIndex++;
             NetworkServer.Spawn(card, connectionToClient);
             RpcShowCard(card, "Dealt", "");
         }
@@ -211,6 +206,13 @@ namespace MirrorBasics {
     void CmdPlayCard(GameObject card, string playAreaName)
     {
         RpcShowCard(card, "Played", playAreaName);
+    }
+
+    [Server]
+    void NewPlayerConnected()
+    {
+        GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gm.CmdUpdatePlayerConnected();
     }
 
     //UpdateTurnsPlayed() is run only by the Server, finding the Server-only GameManager game object and incrementing the relevant variable
@@ -233,8 +235,8 @@ namespace MirrorBasics {
     [ClientRpc]
     void RpcUpdateTurnCounter(int turn)
     {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
         // a display turn includes player one and player two taking a turn
         int displayTurn = 1 + turn/2;
 
@@ -272,8 +274,8 @@ namespace MirrorBasics {
     [ClientRpc]
     void RpcShowCard(GameObject card, string type, string playAreaName)
     {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         //if the card has been "Dealt," determine whether this Client has authority over it, and send it either to the PlayerHandArea or EnemyArea, accordingly. For the latter, flip it so the player can't see the front!
         if (type == "Dealt"){
@@ -383,8 +385,8 @@ namespace MirrorBasics {
     [ClientRpc]
     public void RpcInitiateGame()
     {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         Debug.Log("Jeffrey: Game Initiated");
 
@@ -411,8 +413,8 @@ namespace MirrorBasics {
     public void RpcSwitchTurns()
     {
         Debug.Log("RpcSwitchTurns Called");
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         // calculate score
         if (pm.isPlayerTurn) {
@@ -482,8 +484,8 @@ namespace MirrorBasics {
 
     [ClientRpc]
     void RpcResetGame() {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         // Delete all cards in safe areas, enemy area, player dealt cards and enemy dealt cards
         deleteListChildren(pm.safeAreaList);
@@ -501,7 +503,7 @@ namespace MirrorBasics {
         resetPlayerScoresAndTurn();
 
         // Set active turn and tell Game Manager to initiate game
-        if (pm.id == 0) {
+        if (isServer) {
             pm.isPlayerTurn = true;
         } else {
             pm.isPlayerTurn = false;
@@ -520,8 +522,8 @@ namespace MirrorBasics {
     }
 
     void resetPlayerScoresAndTurn() {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         pm.playerScore = 0;
         pm.PlayerScoreText.text = "Player score: 0";
@@ -551,181 +553,6 @@ namespace MirrorBasics {
         } else {
             Debug.Log("Game manager in initiate game is null");
         }
-    }
-
-    /* 
-        HOST MATCH
-    */
-
-    public void HostGame (bool publicMatch) {
-        string matchID = MatchMaker.GetRandomMatchID ();
-        CmdHostGame (matchID, publicMatch);
-    }
-
-    [Command]
-    void CmdHostGame (string _matchID, bool publicMatch) {
-        matchID = _matchID;
-        if (MatchMaker.instance.HostGame (_matchID, this, publicMatch, out playerIndex)) {
-            Debug.Log ($"<color=green>Game hosted successfully</color>");
-            networkMatch.matchId = _matchID.ToGuid ();
-            TargetHostGame (true, _matchID, playerIndex);
-        } else {
-            Debug.Log ($"<color=red>Game hosted failed</color>");
-            TargetHostGame (false, _matchID, playerIndex);
-        }
-    }
-
-    [TargetRpc]
-    void TargetHostGame (bool success, string _matchID, int _playerIndex) {
-        playerIndex = _playerIndex;
-        matchID = _matchID;
-        Debug.Log ($"MatchID: {matchID} == {_matchID}");
-        UILobby.instance.HostSuccess (success, _matchID);
-    }
-
-    /* 
-        JOIN MATCH
-    */
-
-    public void JoinGame (string _inputID) {
-        CmdJoinGame (_inputID);
-    }
-
-    [Command]
-    void CmdJoinGame (string _matchID) {
-        matchID = _matchID;
-        if (MatchMaker.instance.JoinGame (_matchID, this, out playerIndex)) {
-            Debug.Log ($"<color=green>Game Joined successfully</color>");
-            networkMatch.matchId = _matchID.ToGuid ();
-            TargetJoinGame (true, _matchID, playerIndex);
-
-            //Host
-            if (isServer && playerLobbyUI != null) {
-                playerLobbyUI.SetActive (true);
-            }
-        } else {
-            Debug.Log ($"<color=red>Game Joined failed</color>");
-            TargetJoinGame (false, _matchID, playerIndex);
-        }
-    }
-
-    [TargetRpc]
-    void TargetJoinGame (bool success, string _matchID, int _playerIndex) {
-        playerIndex = _playerIndex;
-        matchID = _matchID;
-        Debug.Log ($"MatchID: {matchID} == {_matchID}");
-        UILobby.instance.JoinSuccess (success, _matchID);
-    }
-
-    /* 
-        DISCONNECT
-    */
-
-    public void DisconnectGame () {
-        CmdDisconnectGame ();
-    }
-
-    [Command]
-    void CmdDisconnectGame () {
-        ServerDisconnect ();
-    }
-
-    void ServerDisconnect () {
-        MatchMaker.instance.PlayerDisconnected (this, matchID);
-        RpcDisconnectGame ();
-        networkMatch.matchId = netIDGuid;
-    }
-
-    [ClientRpc]
-    void RpcDisconnectGame () {
-        ClientDisconnect ();
-    }
-
-    void ClientDisconnect () {
-        if (playerLobbyUI != null) {
-            if (!isServer) {
-                Destroy (playerLobbyUI);
-            } else {
-                playerLobbyUI.SetActive (false);
-            }
-        }
-    }
-
-    /* 
-        SEARCH MATCH
-    */
-
-    public void SearchGame () {
-        // CmdSearchGame ();
-    }
-
-    // [Command]
-    // void CmdSearchGame () {
-    //     if (MatchMaker.instance.SearchGame (this, out playerIndex, out matchID)) {
-    //         Debug.Log ($"<color=green>Game Found Successfully</color>");
-    //         networkMatch.matchId = matchID.ToGuid ();
-    //         TargetSearchGame (true, matchID, playerIndex);
-
-    //         //Host
-    //         if (isServer && playerLobbyUI != null) {
-    //             playerLobbyUI.SetActive (true);
-    //         }
-    //     } else {
-    //         Debug.Log ($"<color=red>Game Search Failed</color>");
-    //         TargetSearchGame (false, matchID, playerIndex);
-    //     }
-    // }
-
-    // [TargetRpc]
-    // void TargetSearchGame (bool success, string _matchID, int _playerIndex) {
-    //     playerIndex = _playerIndex;
-    //     matchID = _matchID;
-    //     Debug.Log ($"MatchID: {matchID} == {_matchID} | {success}");
-    //     UILobby.instance.SearchGameSuccess (success, _matchID);
-    // }
-
-    /* 
-        MATCH PLAYERS
-    */
-
-    [Server]
-    public void PlayerCountUpdated (int playerCount) {
-        TargetPlayerCountUpdated (playerCount);
-    }
-
-    [TargetRpc]
-    void TargetPlayerCountUpdated (int playerCount) {
-        if (playerCount > 1) {
-            UILobby.instance.SetStartButtonActive(true);
-        } else {
-            UILobby.instance.SetStartButtonActive(false);
-        }
-    }
-
-    /* 
-        BEGIN MATCH
-    */
-
-    public void BeginGame () {
-        CmdBeginGame ();
-    }
-
-    [Command]
-    void CmdBeginGame () {
-        MatchMaker.instance.BeginGame (matchID);
-        Debug.Log ($"<color=red>Game Beginning</color>");
-    }
-
-    public void StartGame (int id) { //Server
-        TargetBeginGame (id);
-    }
-
-    [TargetRpc]
-    void TargetBeginGame (int playerId) {
-        Debug.Log ($"MatchID: {matchID} | Beginning");
-        id = playerId;
-        //Additively load game scene
-        SceneManager.LoadScene(1, LoadSceneMode.Additive);
     }
 
     }

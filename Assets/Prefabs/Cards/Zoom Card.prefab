@@ -318,7 +318,7 @@ GameObject:
   - component: {fileID: 3405192468143677634}
   m_Layer: 6
   m_Name: Zoom Card
-  m_TagString: Defence
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

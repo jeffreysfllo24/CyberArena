@@ -20,6 +20,12 @@ namespace Mirror
             return custom != null ? custom.visRange : visRange;
         }
 
+        [ServerCallback]
+        public override void Reset()
+        {
+            lastRebuildTime = 0D;
+        }
+
         public override bool OnCheckObserver(NetworkIdentity identity, NetworkConnection newObserver)
         {
             int range = GetVisRange(identity);
@@ -53,11 +59,10 @@ namespace Mirror
             }
         }
 
-        void Update()
+        // internal so we can update from tests
+        [ServerCallback]
+        internal void Update()
         {
-            // only on server
-            if (!NetworkServer.active) return;
-
             // rebuild all spawned NetworkIdentity's observers every interval
             if (NetworkTime.localTime >= lastRebuildTime + rebuildInterval)
             {

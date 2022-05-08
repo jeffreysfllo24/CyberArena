@@ -12,8 +12,8 @@ namespace MirrorBasics {
         public void OnTargetClick()
         {
             //locate the PlayerManager in this Client
-            NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-            PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+            var networkIdentity = new NobleConnect.Mirror.NobleClient();
+            PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
             //if this client hasAuthority over this gameobject, we don't need to pass in the gameobject to the server command. If it doesn't, we do!
             if (hasAuthority)

@@ -14,7 +14,7 @@ namespace MirrorBasics {
         public GameObject ZoomCard;
         //zoomCard is declared here for later usage, while zoomSprite is assigned during Awake() to store this gameobject's sprite
         private GameObject zoomCard;
-        bool isDragging;
+        static bool isDragging;
 
         public void Awake()
         {
@@ -25,7 +25,7 @@ namespace MirrorBasics {
         public void OnPointerEnter(PointerEventData pointerEventData)
         {
             // only create one zoom card at a time
-            if (zoomCard != null || isDragging) return;       
+            if (zoomCard != null || CardZoom.isDragging) return;       
 
             //determine whether the client hasAuthority over this gameobject
             bool cardBeenPlayed = gameObject.GetComponent<DragDrop>().beenPlayed;
@@ -64,7 +64,7 @@ namespace MirrorBasics {
         public void StartDrag()
         {
             if (zoomCard == null) return;
-            isDragging = true;
+            CardZoom.isDragging = true;
             // Cancel zoom when player picks up card
             Debug.Log("Cancelling zoomCard due to drag");
             Destroy(zoomCard);
@@ -73,7 +73,7 @@ namespace MirrorBasics {
 
         public void EndDrag()
         {
-            isDragging = false;
+            CardZoom.isDragging = false;
         }
     }
 }
