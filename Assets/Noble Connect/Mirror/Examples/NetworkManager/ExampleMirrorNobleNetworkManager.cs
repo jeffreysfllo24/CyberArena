@@ -13,7 +13,7 @@ namespace NobleConnect.Examples.Mirror
             base.OnClientConnect();
             Debug.Log("Client connected.");
         }
-
+        
         public override void OnClientDisconnect() 
         {
             base.OnClientDisconnect();

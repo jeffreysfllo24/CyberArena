@@ -6,8 +6,9 @@ namespace NobleConnect.Examples.Mirror
 {
     // Example implementation of NobleNetworkManager
     // Look at ExampleNetworkHUD for more information on how to use it. 
-    public class MirrorNobleNetworkManager : NobleNetworkManager
+    public class MirrorNetworkNobleManager : NobleNetworkManager
     {
+        
         public override void OnClientConnect()
         {
             base.OnClientConnect();

@@ -92,8 +92,8 @@ namespace MirrorBasics {
                 
                 isDraggable = false;
                 beenPlayed = true;
-                NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-                PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+                var networkIdentity = new NobleConnect.Mirror.NobleClient();
+                PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
                 pm.PlayCard(gameObject, dropZone.name);
             }
             //otherwise, send it back from whence it came
@@ -129,8 +129,8 @@ namespace MirrorBasics {
 
         private bool isPlayerTurn()
         {
-            NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-            PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+            var networkIdentity = new NobleConnect.Mirror.NobleClient();
+            PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
             Debug.Log(pm.isPlayerTurn);
             return pm.isPlayerTurn;
         }

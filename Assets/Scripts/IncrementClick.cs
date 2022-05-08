@@ -15,8 +15,8 @@ namespace MirrorBasics {
         public void IncrementClicks()
         {
             //locate the PlayerManager within this client and request the server to run CmdIncrementClick(), passing in this gameobject
-            NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-            PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+            var networkIdentity = new NobleConnect.Mirror.NobleClient();
+            PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
             pm.CmdIncrementClick(gameObject);
         }
     }

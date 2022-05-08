@@ -52,6 +52,7 @@ namespace MirrorBasics {
         Debug.Log("onStartClient Callled");
 
         base.OnStartClient();
+        NewPlayerConnected();
     }
 
     public override void OnStopClient () {
@@ -64,8 +65,8 @@ namespace MirrorBasics {
 
     [ClientRpc]
     public void RpcPopulateGameObjects() {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         pm.PlayerHandArea = GameObject.Find("PlayerHandArea");
         pm.EnemyHandArea = GameObject.Find("EnemyHandArea");
@@ -81,7 +82,7 @@ namespace MirrorBasics {
 
         setAreas();
         Debug.Log("Player ID: " + id);
-        if (pm.id == 0) {
+        if (isServer) {
             pm.isPlayerTurn = true;
         }
 
@@ -90,8 +91,8 @@ namespace MirrorBasics {
     }
 
     void setAreas() {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         pm.SpaceArea1 = GameObject.Find("SpaceArea (1)");
         pm.safeAreaList.Add(pm.SpaceArea1);
@@ -131,8 +132,8 @@ namespace MirrorBasics {
     }
 
     void RpcUpdateEndGameText(int playerScore, int enemyScore) {     
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         if (pm.ResetButton == null){
             Debug.Log("Reset Button Null in update endgame text");
@@ -186,6 +187,13 @@ namespace MirrorBasics {
         RpcShowCard(card, "Played", playAreaName);
     }
 
+    [Server]
+    void NewPlayerConnected()
+    {
+        GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gm.CmdUpdatePlayerConnected();
+    }
+
     //UpdateTurnsPlayed() is run only by the Server, finding the Server-only GameManager game object and incrementing the relevant variable
     [Server]
     void UpdateTurnsPlayed()
@@ -206,8 +214,8 @@ namespace MirrorBasics {
     [ClientRpc]
     void RpcUpdateTurnCounter(int turn)
     {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
         // a display turn includes player one and player two taking a turn
         int displayTurn = 1 + turn/2;
 
@@ -245,8 +253,8 @@ namespace MirrorBasics {
     [ClientRpc]
     void RpcShowCard(GameObject card, string type, string playAreaName)
     {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         //if the card has been "Dealt," determine whether this Client has authority over it, and send it either to the PlayerHandArea or EnemyArea, accordingly. For the latter, flip it so the player can't see the front!
         if (type == "Dealt"){
@@ -356,8 +364,8 @@ namespace MirrorBasics {
     [ClientRpc]
     public void RpcInitiateGame()
     {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         Debug.Log("Jeffrey: Game Initiated");
 
@@ -384,8 +392,8 @@ namespace MirrorBasics {
     public void RpcSwitchTurns()
     {
         Debug.Log("RpcSwitchTurns Called");
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         // calculate score
         if (pm.isPlayerTurn) {
@@ -455,8 +463,8 @@ namespace MirrorBasics {
 
     [ClientRpc]
     void RpcResetGame() {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         // Delete all cards in safe areas, enemy area, player dealt cards and enemy dealt cards
         deleteListChildren(pm.safeAreaList);
@@ -474,7 +482,7 @@ namespace MirrorBasics {
         resetPlayerScoresAndTurn();
 
         // Set active turn and tell Game Manager to initiate game
-        if (pm.id == 0) {
+        if (isServer) {
             pm.isPlayerTurn = true;
         } else {
             pm.isPlayerTurn = false;
@@ -493,8 +501,8 @@ namespace MirrorBasics {
     }
 
     void resetPlayerScoresAndTurn() {
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+        var networkIdentity = new NobleConnect.Mirror.NobleClient();
+        PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
 
         pm.playerScore = 0;
         pm.PlayerScoreText.text = "Player score: 0";

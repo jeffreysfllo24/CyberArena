@@ -13,7 +13,7 @@ namespace MirrorBasics {
 
         void Start () {
             Debug.Log("Game Manager Awake!");
-            awakeGameObjects();
+            // awakeGameObjects();
         }
 
         public void UpdateTurnsPlayed()
@@ -32,21 +32,21 @@ namespace MirrorBasics {
 
             // Check if two players connected
             if (playersConnected > 1) {
-                initiateGame();
+                awakeGameObjects();
             }
         }
 
         [Server]
         public void awakeGameObjects() {
-            NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-            PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+            var networkIdentity = new NobleConnect.Mirror.NobleClient();
+            PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
             pm.RpcPopulateGameObjects();
             pm.RpcInitiateGame();
         }
 
         public void initiateGame() {
-            NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-            PlayerManager pm = networkIdentity.GetComponent<PlayerManager>();
+            var networkIdentity = new NobleConnect.Mirror.NobleClient();
+            PlayerManager pm = networkIdentity.connection.identity.GetComponent<PlayerManager>();
             pm.RpcInitiateGame();
         }
     }
