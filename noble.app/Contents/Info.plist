@@ -5,17 +5,17 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
     <key>CFBundleExecutable</key>
-    <string>Tabletop Tutorial 2021 Update</string>
+    <string>CyberArena</string>
     <key>CFBundleGetInfoString</key>
     <string>Unity Player version 2021.3.0f1 (6eacc8284459). (c) 2022 Unity Technologies ApS. All rights reserved.</string>
     <key>CFBundleIconFile</key>
     <string>PlayerIcon.icns</string>
     <key>CFBundleIdentifier</key>
-    <string>com.DefaultCompany.Tabletop-Tutorial-2021-Update</string>
+    <string>com.Keener-Studios.CyberArena</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
-    <string>Tabletop Tutorial 2021 Update</string>
+    <string>CyberArena</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
