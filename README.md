@@ -11,9 +11,10 @@ Cyber Arena is a two player card game all about staying safe online! Have fun wh
 Playing Cyber Arena with your friends is simple! 
 
 1. Download the latest Cyber Arena build from the releases.
-2. Choose one player to host the game and share the generated IP and port number with your friend. 
+2. Choose one player to host the game and share the generated IP and port number with your friend. (This is not your computer's IP, but an IP assigned by our relay server.)
 3. That's it :smile: 
 
+(On Windows you may get a popup that says your firewall blocked CyberArena. You can allow CyberArena to communicate over private networks.)
 
 
 
