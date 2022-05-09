@@ -1,4 +1,6 @@
 ![Alt text](Images/cyber-arena-thumbnail.png?raw=true "Title")
+[![Video Tutorials](https://img.shields.io/badge/video_tutorial-brightgreen.svg)](https://youtu.be/-_xXDbnu6yM)
+[![release](https://img.shields.io/github/release/jeffreysfllo24/SecureWorksHackathon2022.svg)](https://github.com/jeffreysfllo24/SecureWorksHackathon2022/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
 
 **It take 20 years to build a reputation and a few minutes of a cyber-incident to ruin it.**
@@ -8,7 +10,7 @@ Cyber Arena is a two player card game all about staying safe online! Have fun wh
 
 # How to Play?
 
-Playing Cyber Arena with your friends is simple! 
+**Playing Cyber Arena with your friends is simple!** 
 
 1. Download the latest Cyber Arena build (Mac or Windows) from the [release page](https://github.com/jeffreysfllo24/SecureWorksHackathon2022/releases/tag/v1.0).
 2. Choose one player to host the game and share the generated IP and port number with your friend (This is not your computer's IP, but an IP assigned by our relay server). The client will input the IP and port number and connect.
@@ -33,16 +35,16 @@ Cybersecurity is becoming ever more important in the digital world and so too is
 
 ![Alt text](Images/card-logic.png?raw=true "Title")
 
-## Asset Cards
+### Asset Cards
 Points are earned by playing asset cards. At the end of each turn you gain points based on how many asset cards are present on your side of the board (i.e if you have 3 asset cards on the field you gain 3 points after you end your turn). Asset cards cards can be played on any of the 6 empty sectors of a players board. 
 
-## Defense Cards
+### Defense Cards
 Players can protect their assets using "defense" cards. At most one defense card can be played on a sector containing an asset card. 
 
-## Attack Cards
+### Attack Cards
 You want to keep your asset cards safe from attacks! Attack cards can be used to remove a defense card or asset card if no defense is present from an enemy sector. 
 
-## Categories
+### Categories
 Every card belongs to a category of security for learning purposes! Gain a better understanding of which attacks are a threat to what assets, and what defenses can protect the asset.
 
 
