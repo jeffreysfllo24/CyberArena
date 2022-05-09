@@ -36,10 +36,10 @@ Cybersecurity is becoming ever more important in the digital world and so too is
 ![Alt text](Images/card-logic.png?raw=true "Title")
 
 ### Asset Cards
-Points are earned by playing asset cards. At the end of each turn you gain points based on how many asset cards are present on your side of the board (i.e if you have 3 asset cards on the field you gain 3 points after you end your turn). Asset cards cards can be played on any of the 6 empty sectors of a players board. 
+Points are earned by playing asset cards. At the end of each turn you gain points based on how many asset cards are present on your side of the board (i.e if you have 3 asset cards on the field you gain 3 points after you end your turn). Asset cards cards can be played on any of the 6 empty sectors of a player's board. 
 
 ### Defense Cards
-Players can protect their assets using "defense" cards. At most one defense card can be played on a sector containing an asset card. 
+Players can protect their assets using defense cards. Defense cards can only be played on sectors containing an asset card and at most one can be played for a given sector.
 
 ### Attack Cards
 You want to keep your asset cards safe from attacks! Attack cards can be used to remove a defense card or asset card if no defense is present from an enemy sector. 
